@@ -1,0 +1,60 @@
+slug: mattermost
+name: "Mattermost"
+category: MESSAGING
+description: "Mattermost is an open source platform for secure collaboration across the entire software development lifecycle. Slack alternative with self-hosting."
+subdomain: chat
+tier: FREE
+dockerImage: mattermost/mattermost-enterprise-edition
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/mattermost/mattermost-enterprise-edition"
+port: 8065
+minRam: "512MB"
+license: MIT
+deploymentComplexity: MODERATE
+replaces:
+  - "Slack"
+  - "Microsoft Teams"
+  - "Discord"
+tags:
+  - "chat"
+  - "messaging"
+  - "collaboration"
+  - "team-communication"
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+envs:
+  - key: MM_SITESERVERURL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: MM_SQLSETTINGS_DRIVERNAME
+    value: "postgres"
+  - key: MM_SQLSETTINGS_DATASOURCE
+    template: "postgres://{{ .DBUser }}:{{ .DBPassword }}@postgres:5432/{{ .DBName }}?sslmode=disable"
+  - key: MM_FILESETTINGS_DRIVERNAME
+    value: "local"
+volumes:
+  - name: data
+    path: /mattermost/data
+features:
+  hasApi: true
+  hasMobileApp: true
+  hasSSOSupport: true
+  hasBackupTool: true
+  hasMultiLanguage: true
+  hasAuditLog: true
+  hasGuestAccess: true
+  hasOfflineMode: true
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: true
+businessRelevance: 9
+meta:
+  website: "https://mattermost.com"
+  github: "https://github.com/mattermost/mattermost"
+  docs: "https://docs.mattermost.com"
+  logo: "mattermost.svg"

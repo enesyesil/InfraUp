@@ -1,0 +1,69 @@
+slug: mautic
+name: "Mautic"
+category: EMAIL_MARKETING
+description: "Open-source marketing automation platform with email campaigns, lead management, and CRM. Alternative to HubSpot and Marketo."
+subdomain: mautic
+tier: FREE
+dockerImage: mautic/mautic
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/mautic/mautic"
+port: 8080
+minRam: "512MB"
+license: GPL_3
+deploymentComplexity: MODERATE
+replaces:
+  - HubSpot
+  - Marketo
+tags:
+  - marketing-automation
+  - email
+  - crm
+  - lead-management
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+envs:
+  - key: MAUTIC_SITE_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: MAUTIC_ADMIN_EMAIL
+    value: "admin@example.com"
+  - key: MAUTIC_DB_HOST
+    value: "postgres"
+  - key: MAUTIC_DB_PORT
+    value: "5432"
+  - key: MAUTIC_DB_USER
+    template: "{{ .DBUser }}"
+  - key: MAUTIC_DB_PASSWORD
+    template: "{{ .DBPassword }}"
+  - key: MAUTIC_DB_NAME
+    template: "{{ .DBName }}"
+  - key: MAUTIC_DB_DRIVER
+    value: "pdo_pgsql"
+  - key: MAUTIC_ADMIN_PASSWORD
+    generated: random32
+volumes:
+  - name: data
+    path: /var/www/html
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: false
+  hasBackupTool: false
+  hasMultiLanguage: true
+  hasAuditLog: false
+  hasGuestAccess: false
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 6
+meta:
+  website: "https://www.mautic.org"
+  github: "https://github.com/mautic/mautic"
+  docs: "https://docs.mautic.org"
+  logo: "mautic.svg"

@@ -1,0 +1,74 @@
+slug: strapi
+name: Strapi
+category: CMS
+description: Headless CMS for building APIs. Self-host alternative to Contentful and Sanity with API, SSO, multi-language, and audit log.
+subdomain: cms
+tier: FREE
+dockerImage: strapi/strapi
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/strapi/strapi"
+port: 1337
+minRam: "512MB"
+license: MIT
+deploymentComplexity: SIMPLE
+replaces:
+  - Contentful
+  - Sanity
+tags:
+  - cms
+  - headless
+  - api
+  - content
+  - self-hosted
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+envs:
+  - key: HOST
+    value: "0.0.0.0"
+  - key: PORT
+    value: "1337"
+  - key: APP_KEYS
+    generated: random32
+  - key: API_TOKEN_SALT
+    generated: random32
+  - key: ADMIN_JWT_SECRET
+    generated: random32
+  - key: DATABASE_CLIENT
+    value: "postgres"
+  - key: DATABASE_HOST
+    value: "postgres"
+  - key: DATABASE_PORT
+    value: "5432"
+  - key: DATABASE_NAME
+    template: "{{ .DBName }}"
+  - key: DATABASE_USERNAME
+    template: "{{ .DBUser }}"
+  - key: DATABASE_PASSWORD
+    template: "{{ .DBPassword }}"
+volumes:
+  - name: data
+    path: /srv/app
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: true
+  hasBackupTool: false
+  hasMultiLanguage: true
+  hasAuditLog: true
+  hasGuestAccess: false
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 8
+meta:
+  website: "https://strapi.io"
+  github: "https://github.com/strapi/strapi"
+  docs: "https://docs.strapi.io"
+  logo: "strapi.svg"

@@ -1,0 +1,73 @@
+slug: zammad
+name: "Zammad"
+category: SUPPORT
+description: "Open-source helpdesk and customer support system with ticketing, knowledge base, and chat. Alternative to Zendesk and Freshdesk."
+subdomain: tickets
+tier: FREE
+dockerImage: zammad/zammad
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/zammad/zammad"
+port: 8080
+minRam: "1GB"
+license: AGPL_3
+deploymentComplexity: COMPLEX
+replaces:
+  - Zendesk
+  - Freshdesk
+tags:
+  - helpdesk
+  - ticketing
+  - support
+  - knowledge-base
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+  - id: redis
+    type: CACHE
+    optional: false
+  - id: elasticsearch
+    type: SEARCH
+    optional: false
+envs:
+  - key: ZAMMAD_BASE_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: SECRET_KEY_BASE
+    generated: random64
+  - key: POSTGRES_HOST
+    value: "postgres"
+  - key: POSTGRES_USER
+    template: "{{ .DBUser }}"
+  - key: POSTGRES_PASSWORD
+    template: "{{ .DBPassword }}"
+  - key: POSTGRES_DB
+    template: "{{ .DBName }}"
+  - key: REDIS_URL
+    value: "redis://redis:6379"
+  - key: ELASTICSEARCH_HOST
+    value: "elasticsearch:9200"
+volumes:
+  - name: data
+    path: /opt/zammad
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: true
+  hasBackupTool: false
+  hasMultiLanguage: true
+  hasAuditLog: true
+  hasGuestAccess: false
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 7
+meta:
+  website: "https://zammad.org"
+  github: "https://github.com/zammad/zammad"
+  docs: "https://docs.zammad.org"
+  logo: "zammad.svg"

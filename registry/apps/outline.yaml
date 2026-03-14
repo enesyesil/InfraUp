@@ -1,0 +1,65 @@
+slug: outline
+name: "Outline"
+category: DOCS
+description: "A fast, collaborative wiki and knowledge base for teams. Beautiful editor with real-time collaboration."
+subdomain: docs
+tier: FREE
+dockerImage: outlinewiki/outline
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/outlinewiki/outline"
+port: 3000
+minRam: "512MB"
+license: BSD_3
+deploymentComplexity: MODERATE
+replaces:
+  - "Notion"
+  - "Confluence"
+  - "GitBook"
+tags:
+  - "docs"
+  - "wiki"
+  - "knowledge-base"
+  - "collaboration"
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+  - id: redis
+    type: CACHE
+    optional: false
+envs:
+  - key: URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: SECRET_KEY
+    generated: random64
+  - key: DATABASE_URL
+    template: "postgres://{{ .DBUser }}:{{ .DBPassword }}@postgres:5432/{{ .DBName }}"
+  - key: REDIS_URL
+    value: "redis://redis:6379"
+  - key: NODE_ENV
+    value: "production"
+volumes:
+  - name: data
+    path: /var/lib/outline/data
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: true
+  hasBackupTool: false
+  hasMultiLanguage: true
+  hasAuditLog: true
+  hasGuestAccess: false
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: true
+businessRelevance: 9
+meta:
+  website: "https://www.getoutline.com"
+  github: "https://github.com/outline/outline"
+  docs: "https://docs.getoutline.com"
+  logo: "outline.svg"

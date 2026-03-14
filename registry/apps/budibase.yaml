@@ -1,0 +1,63 @@
+slug: budibase
+name: Budibase
+category: INTERNAL_TOOLS
+description: Low-code platform for building business apps. Self-host alternative to Retool with API, SSO, and multi-language support.
+subdomain: budibase
+tier: FREE
+dockerImage: budibase/budibase
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/budibase/budibase"
+port: 80
+minRam: "512MB"
+license: GPL_3
+deploymentComplexity: MODERATE
+replaces:
+  - Retool
+tags:
+  - low-code
+  - internal-tools
+  - dashboard
+  - automation
+  - self-hosted
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+envs:
+  - key: NODE_ENV
+    value: "production"
+  - key: BUDIBASE_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: DATABASE_URL
+    template: "postgresql://{{ .DBUser }}:{{ .DBPassword }}@postgres:5432/{{ .DBName }}"
+  - key: JWT_SECRET
+    generated: random32
+  - key: MINIO_ACCESS_KEY
+    generated: random32
+  - key: MINIO_SECRET_KEY
+    generated: random32
+volumes:
+  - name: data
+    path: /budibase
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: true
+  hasBackupTool: false
+  hasMultiLanguage: true
+  hasAuditLog: false
+  hasGuestAccess: false
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 6
+meta:
+  website: "https://budibase.com"
+  github: "https://github.com/Budibase/budibase"
+  docs: "https://docs.budibase.com"
+  logo: "budibase.svg"

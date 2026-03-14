@@ -1,0 +1,32 @@
+---
+slug: cal-com
+lastReviewed: 2026-03-01
+---
+
+## What It Actually Is
+
+Cal.com is an open-source scheduling tool—Calendly, but self-hostable. You set your availability, create event types (30-min call, 1-hour meeting, etc.), and share a link. Recipients pick a slot, and it goes on your calendar. Supports one-on-one, round-robin, and collective availability. Replaces Calendly, Calendly alternatives, and manual back-and-forth.
+
+## Who It's For
+
+Consultants, sales teams, support orgs, and anyone who schedules a lot of meetings. Teams that want to own their scheduling data and avoid Calendly's pricing. Companies that need custom branding or integration with internal tools.
+
+## Key Features
+
+Event types define duration, buffer time, and availability. You can limit bookings per day, require questions, and add custom redirects. Calendar sync works with Google Calendar, Outlook, and CalDAV. Round-robin spreads meetings across a team. There's a public API, webhooks, and embeddable booking pages. The UI is clean and mobile-friendly.
+
+## Honest Tradeoffs
+
+The self-hosted version requires you to configure calendar integrations manually—Google OAuth, Outlook, etc. Each calendar provider has its own setup; it's not plug-and-play. Some advanced features (payment integration, certain apps) are cloud-only or require additional setup. The project has commercial offerings; the open-source core is complete but not every feature is free.
+
+## Setup Gotchas
+
+Google Calendar OAuth is the most common pain point. You need to create credentials in Google Cloud Console, set redirect URIs correctly, and configure the right scopes. A wrong redirect URI or missing scope will fail silently. Make sure your `NEXTAUTH_URL` matches your actual domain. Database migrations run on first start—give it time.
+
+## Compared To Alternatives
+
+**Calendly** is hosted and easier to set up but locks you in and costs more. **Open source alternatives** like Cal.com are fewer—most scheduling tools are SaaS. Cal.com is the main self-hosted option with a mature feature set. The tradeoff is setup complexity for ownership and cost control.
+
+## Real World Fit
+
+Cal.com fits teams that schedule many external meetings and want to self-host. Best for 1–50 person orgs with someone who can handle OAuth and calendar setup. Not ideal if you want zero-config—you'll spend an hour on Google/Outlook integration. Once running, it's solid and flexible.

@@ -1,0 +1,32 @@
+---
+slug: uptime-kuma
+lastReviewed: 2026-03-01
+---
+
+## What It Actually Is
+
+Uptime Kuma is a self-hosted status page and uptime monitor. You add URLs, HTTP(s) endpoints, or services (Docker, MySQL, etc.), and it checks them on a schedule. When something goes down, it sends notifications via webhooks, Telegram, Discord, Slack, email, and more. You get a public status page to share with users.
+
+## Who It's For
+
+Indie developers, small teams, and anyone who needs to know when their services are down without paying for BetterStack, Pingdom, or UptimeRobot. It's the "I just need to know if my site is up" tool—simple, visual, and free.
+
+## Key Features
+
+Add monitors for HTTP(s), TCP, DNS, Docker containers, and more. Set check intervals (e.g., every 60 seconds). Configure notifications for down/up events via 90+ channels—webhooks, chat apps, email, PagerDuty, etc. The status page is customizable and can show incident history. All data lives in a single SQLite file; no external database required.
+
+## Honest Tradeoffs
+
+Uptime Kuma is single-node only—there's no distributed monitoring, no multi-region checks. If the server running Kuma goes down, you won't get alerts. Native alerting integrations are mostly webhooks and notification channels; there's no built-in PagerDuty-style escalation or on-call rotation. For serious uptime monitoring, you'd pair it with something else or use a commercial service.
+
+## Setup Gotchas
+
+Run it behind HTTPS if you're using browser-based notifications (Push API requires secure context). The default SQLite path is in the container; use a volume to persist data. Webhook payloads are documented but vary by integration—test your notification channels. For Docker monitors, the container needs access to the Docker socket.
+
+## Compared To Alternatives
+
+Uptime Kuma is in a class of its own for simplicity—single binary, SQLite, no dependencies. **BetterStack**, **Pingdom**, and **UptimeRobot** are hosted and offer multi-location checks and more robust alerting. **Healthchecks.io** is simpler (cron job pings only) but different use case. For self-hosted, single-node status monitoring, Kuma is the default choice.
+
+## Real World Fit
+
+Uptime Kuma fits small projects and teams that need basic uptime monitoring and a status page without complexity. Ideal for 1–10 services, indie apps, and side projects. Not suitable for mission-critical, multi-region monitoring—use a commercial service or build something custom for that.

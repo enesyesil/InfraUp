@@ -1,0 +1,64 @@
+slug: invoiceninja
+name: Invoice Ninja
+category: FINANCE
+description: Open-source invoicing and expense tracking. Self-host alternative to FreshBooks and QuickBooks with API, mobile app, multi-language, and guest access.
+subdomain: invoices
+tier: FREE
+dockerImage: invoiceninja/invoiceninja
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/invoiceninja/invoiceninja"
+port: 80
+minRam: "512MB"
+license: AGPL_3
+deploymentComplexity: MODERATE
+replaces:
+  - FreshBooks
+  - QuickBooks
+tags:
+  - invoicing
+  - finance
+  - expenses
+  - billing
+  - self-hosted
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+envs:
+  - key: APP_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: DB_HOST
+    value: "postgres"
+  - key: DB_DATABASE
+    template: "{{ .DBName }}"
+  - key: DB_USERNAME
+    template: "{{ .DBUser }}"
+  - key: DB_PASSWORD
+    template: "{{ .DBPassword }}"
+  - key: APP_KEY
+    generated: random32
+volumes:
+  - name: data
+    path: /var/www/app/storage
+features:
+  hasApi: true
+  hasMobileApp: true
+  hasSSOSupport: false
+  hasBackupTool: false
+  hasMultiLanguage: true
+  hasAuditLog: false
+  hasGuestAccess: true
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 7
+meta:
+  website: "https://invoiceninja.com"
+  github: "https://github.com/invoiceninja/invoiceninja"
+  docs: "https://invoiceninja.github.io"
+  logo: "invoiceninja.svg"

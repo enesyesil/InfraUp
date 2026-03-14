@@ -1,0 +1,52 @@
+slug: minio
+name: MinIO
+category: STORAGE
+description: High-performance, S3-compatible object storage for AI, ML, and any data-intensive workload. Drop-in replacement for Amazon S3.
+subdomain: s3
+tier: FREE
+dockerImage: minio/minio
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/minio/minio"
+port: 9000
+minRam: "512MB"
+license: AGPL_3
+deploymentComplexity: SIMPLE
+replaces:
+  - AmazonS3
+tags:
+  - storage
+  - object-storage
+  - s3
+  - cloud-storage
+  - api
+dependencies: []
+envs:
+  - key: MINIO_ROOT_USER
+    generated: random32
+  - key: MINIO_ROOT_PASSWORD
+    generated: random64
+volumes:
+  - name: data
+    path: /data
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: false
+  hasBackupTool: false
+  hasMultiLanguage: false
+  hasAuditLog: false
+  hasGuestAccess: false
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 7
+meta:
+  website: "https://min.io"
+  github: "https://github.com/minio/minio"
+  docs: "https://min.io/docs"
+  logo: "minio.svg"

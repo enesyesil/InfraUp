@@ -1,0 +1,64 @@
+slug: baserow
+name: Baserow
+category: FORMS
+description: Open-source no-code database and Airtable alternative. Create databases, spreadsheets, and forms with API access.
+subdomain: baserow
+tier: FREE
+dockerImage: baserow/baserow
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/baserow/baserow"
+port: 80
+minRam: "512MB"
+license: MIT
+deploymentComplexity: MODERATE
+replaces:
+  - Airtable
+tags:
+  - database
+  - spreadsheet
+  - airtable
+  - no-code
+  - forms
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+  - id: redis
+    type: CACHE
+    optional: false
+envs:
+  - key: BASEROW_PUBLIC_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: BASEROW_PUBLIC_BACKEND_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: DATABASE_URL
+    template: "postgresql://{{ .DBUser }}:{{ .DBPassword }}@postgres:5432/{{ .DBName }}"
+  - key: REDIS_URL
+    value: "redis://redis:6379"
+  - key: SECRET_KEY
+    generated: random64
+volumes:
+  - name: data
+    path: /baserow/data
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: true
+  hasBackupTool: false
+  hasMultiLanguage: true
+  hasAuditLog: false
+  hasGuestAccess: false
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 6
+meta:
+  website: "https://baserow.io"
+  github: "https://github.com/bram2w/baserow"
+  docs: "https://baserow.io/docs"
+  logo: "baserow.svg"

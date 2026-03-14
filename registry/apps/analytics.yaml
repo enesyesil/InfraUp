@@ -1,0 +1,58 @@
+slug: analytics
+name: "Plausible Analytics"
+category: ANALYTICS
+description: "Simple, privacy-friendly web analytics. Lightweight alternative to Google Analytics with no cookies and GDPR compliant."
+subdomain: analytics
+tier: FREE
+dockerImage: plausible/analytics
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/plausible/analytics"
+port: 8000
+minRam: "512MB"
+license: AGPL_3
+deploymentComplexity: MODERATE
+replaces:
+  - Google Analytics
+tags:
+  - analytics
+  - privacy
+  - web-stats
+  - gdpr
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+envs:
+  - key: BASE_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: SECRET_KEY_BASE
+    generated: random64
+  - key: DATABASE_URL
+    template: "postgres://{{ .DBUser }}:{{ .DBPassword }}@postgres:5432/{{ .DBName }}"
+  - key: DISABLE_REGISTRATION
+    value: "false"
+volumes:
+  - name: data
+    path: /app/data
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: false
+  hasBackupTool: false
+  hasMultiLanguage: false
+  hasAuditLog: false
+  hasGuestAccess: true
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: true
+businessRelevance: 9
+meta:
+  website: "https://plausible.io"
+  github: "https://github.com/plausible/analytics"
+  docs: "https://plausible.io/docs"
+  logo: "analytics.svg"

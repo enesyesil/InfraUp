@@ -1,0 +1,73 @@
+slug: gitlabhq
+name: GitLab
+category: GIT_DEVOPS
+description: Complete DevOps platform. Git repository management, CI/CD, security scanning, and project management in one application.
+subdomain: gitlab
+tier: FREE
+dockerImage: gitlab/gitlab-ce
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/gitlab/gitlab-ce"
+port: 80
+minRam: "4GB"
+license: MIT
+deploymentComplexity: COMPLEX
+replaces:
+  - GitHub
+  - Bitbucket
+tags:
+  - git
+  - devops
+  - cicd
+  - version-control
+  - collaboration
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+  - id: redis
+    type: CACHE
+    optional: false
+envs:
+  - key: GITLAB_OMNIBUS_CONFIG
+    value: "external_url 'https://{{ .Subdomain }}.{{ .Domain }}'"
+  - key: GITLAB_ROOT_PASSWORD
+    generated: random32
+  - key: POSTGRES_HOST
+    value: "postgres"
+  - key: POSTGRES_DATABASE
+    template: "{{ .DBName }}"
+  - key: POSTGRES_USER
+    template: "{{ .DBUser }}"
+  - key: POSTGRES_PASSWORD
+    template: "{{ .DBPassword }}"
+  - key: REDIS_HOST
+    value: "redis"
+volumes:
+  - name: config
+    path: /etc/gitlab
+  - name: data
+    path: /var/opt/gitlab
+  - name: logs
+    path: /var/log/gitlab
+features:
+  hasApi: true
+  hasMobileApp: true
+  hasSSOSupport: true
+  hasBackupTool: false
+  hasMultiLanguage: true
+  hasAuditLog: true
+  hasGuestAccess: true
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 7
+meta:
+  website: "https://gitlab.com"
+  github: "https://github.com/gitlabhq/gitlabhq"
+  docs: "https://docs.gitlab.com"
+  logo: "gitlab.svg"

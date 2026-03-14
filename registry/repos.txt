@@ -1,0 +1,93 @@
+# format: github_owner/repo | CATEGORY_ENUM | Replaces (comma separated, title case)
+# blank lines and lines starting with # are ignored
+# category must be exact enum value
+
+# DOCS
+AppFlowy-IO/AppFlowy          | DOCS               | Notion
+outline/outline               | DOCS               | Notion,Confluence
+BookStackApp/BookStack        | DOCS               | Confluence
+requarks/wiki                 | DOCS               | Confluence
+
+# CRM
+twentyhq/twenty               | CRM                | Salesforce,HubSpot
+espocrm/espocrm               | CRM                | HubSpot,Pipedrive
+salesagility/SuiteCRM         | CRM                | Salesforce,HubSpot
+
+# MESSAGING
+mattermost/mattermost         | MESSAGING          | Slack,MicrosoftTeams
+RocketChat/Rocket.Chat        | MESSAGING          | Slack,MicrosoftTeams
+zulip/zulip                   | MESSAGING          | Slack,Discord
+
+# SUPPORT
+chatwoot/chatwoot             | SUPPORT            | Intercom,Zendesk
+freescout-help-desk/freescout | SUPPORT            | HelpScout,Zendesk
+zammad/zammad                 | SUPPORT            | Zendesk,Freshdesk
+
+# ANALYTICS
+plausible/analytics           | ANALYTICS          | GoogleAnalytics
+umami-software/umami          | ANALYTICS          | GoogleAnalytics
+matomo-org/matomo             | ANALYTICS          | GoogleAnalytics
+PostHog/posthog               | ANALYTICS          | Mixpanel,Amplitude
+
+# EMAIL_MARKETING
+knadh/listmonk                | EMAIL_MARKETING    | Mailchimp,CampaignMonitor
+mautic/mautic                 | EMAIL_MARKETING    | HubSpot,Marketo
+
+# PROJECT_MANAGEMENT
+makeplane/plane               | PROJECT_MANAGEMENT | Jira,Linear,ClickUp
+opf/openproject               | PROJECT_MANAGEMENT | Jira,Asana,Monday
+
+# AUTH
+goauthentik/authentik         | AUTH               | Okta,Auth0
+keycloak/keycloak             | AUTH               | Auth0,Okta
+supabase/supabase             | AUTH               | Firebase,Auth0
+
+# STORAGE
+nextcloud/server              | STORAGE            | GoogleDrive,Dropbox
+minio/minio                   | STORAGE            | AmazonS3
+
+# STATUS
+louislam/uptime-kuma          | STATUS             | BetterStack,StatusCake
+
+# MONITORING
+grafana/grafana               | MONITORING         | Datadog,NewRelic
+netdata/netdata               | MONITORING         | Datadog
+SigNoz/signoz                 | MONITORING         | Datadog,NewRelic
+
+# GIT_DEVOPS
+go-gitea/gitea                | GIT_DEVOPS         | GitHub,GitLab
+gitlabhq/gitlabhq             | GIT_DEVOPS         | GitHub,Bitbucket
+
+# AUTOMATION
+n8n-io/n8n                    | AUTOMATION         | Zapier,Make
+activepieces/activepieces     | AUTOMATION         | Zapier,Make
+
+# FORMS
+formbricks/formbricks         | FORMS              | Typeform,Qualtrics
+nocodb/nocodb                 | FORMS              | Airtable
+bram2w/baserow                | FORMS              | Airtable
+baptisteArno/typebot.io       | FORMS              | Typeform,Landbot
+
+# SCHEDULING
+calcom/cal.com                | SCHEDULING         | Calendly,SavvyCal
+
+# PASSWORD_MANAGER
+dani-garcia/vaultwarden       | PASSWORD_MANAGER   | Bitwarden,1Password
+passbolt/passbolt_api         | PASSWORD_MANAGER   | 1Password,LastPass
+
+# FINANCE
+invoiceninja/invoiceninja     | FINANCE            | FreshBooks,QuickBooks
+akaunting/akaunting           | FINANCE            | QuickBooks,Xero
+frappe/erpnext                | FINANCE            | NetSuite,Odoo
+
+# CMS
+strapi/strapi                 | CMS                | Contentful,Sanity
+directus/directus             | CMS                | Contentful,Airtable
+
+# VIDEO_CONFERENCING
+jitsi/jitsi-meet              | VIDEO_CONFERENCING | Zoom,GoogleMeet
+
+# INTERNAL_TOOLS
+appsmithorg/appsmith          | INTERNAL_TOOLS     | Retool
+Budibase/budibase             | INTERNAL_TOOLS     | Retool
+ToolJet/ToolJet               | INTERNAL_TOOLS     | Retool

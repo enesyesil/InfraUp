@@ -1,0 +1,12 @@
+id: redis
+name: "Redis"
+type: CACHE
+image: redis:7-alpine
+port: 6379
+envs: []
+volumes:
+  - name: redisdata
+    path: /data
+resources:
+  memory: 128Mi
+  cpu: 100m

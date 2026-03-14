@@ -1,0 +1,58 @@
+slug: typebot-io
+name: Typebot
+category: FORMS
+description: Powerful open-source chatbot builder for creating conversational forms and surveys. Self-host alternative to Typeform and Landbot.
+subdomain: typebot
+tier: FREE
+dockerImage: baptistearno/typebot-builder
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/baptistearno/typebot-builder"
+port: 3000
+minRam: "512MB"
+license: AGPL_3
+deploymentComplexity: MODERATE
+replaces:
+  - Typeform
+  - Landbot
+tags:
+  - forms
+  - chatbot
+  - surveys
+  - conversational
+  - self-hosted
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+envs:
+  - key: NEXTAUTH_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: DATABASE_URL
+    template: "postgresql://{{ .DBUser }}:{{ .DBPassword }}@postgres:5432/{{ .DBName }}"
+  - key: ENCRYPTION_SECRET
+    generated: random32
+volumes:
+  - name: data
+    path: /app/data
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: false
+  hasBackupTool: false
+  hasMultiLanguage: false
+  hasAuditLog: false
+  hasGuestAccess: true
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 6
+meta:
+  website: "https://typebot.io"
+  github: "https://github.com/baptisteArno/typebot.io"
+  docs: "https://docs.typebot.io"
+  logo: "typebot-io.svg"

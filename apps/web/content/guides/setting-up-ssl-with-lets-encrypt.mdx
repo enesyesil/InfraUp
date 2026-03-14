@@ -1,0 +1,104 @@
+---
+title: "Setting Up SSL with Let's Encrypt"
+description: "Secure your self-hosted apps with free SSL certificates from Let's Encrypt."
+category: "security"
+order: 5
+---
+
+SSL (TLS) encrypts traffic between your users and your server. Without it, anyone on the same network can read passwords, API keys, and data in transit. Let's Encrypt provides free certificates that are trusted by all major browsers. Traefik integrates with it so you get HTTPS with minimal configuration.
+
+## Why SSL Matters
+
+- **Privacy:** Encrypts data in transit. Passwords and sensitive data aren't sent in plain text.
+- **Trust:** Browsers show a lock icon. Users (and search engines) expect HTTPS.
+- **Compliance:** Many standards (PCI, HIPAA, SOC2) require encryption.
+
+Let's Encrypt certificates are free, auto-renew, and work with Traefik out of the box.
+
+## How Let's Encrypt Works
+
+1. You request a certificate for `docs.yourcompany.com`.
+2. Let's Encrypt verifies you control the domain—usually via HTTP challenge: they hit `http://docs.yourcompany.com/.well-known/acme-challenge/xxx` and expect a specific response.
+3. Traefik handles this automatically. You add a label; Traefik does the rest.
+4. Certificates expire in 90 days. Traefik renews them before expiry.
+
+## Traefik + Let's Encrypt Integration
+
+In your Traefik config (from the [Traefik guide](/guides/configuring-traefik-reverse-proxy)), you already have:
+
+```yaml
+- "--certificatesresolvers.letsencrypt.acme.email=you@yourcompany.com"
+- "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+- "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
+```
+
+On each app container, add:
+
+```yaml
+- "traefik.http.routers.yourapp.tls.certresolver=letsencrypt"
+```
+
+Traefik will request and renew certificates for every hostname you route. No manual steps.
+
+## Testing Certificates
+
+After starting your stack, visit `https://docs.yourcompany.com`. Check:
+
+1. **Lock icon** — Browser shows a secure connection.
+2. **Certificate details** — Click the lock, view certificate. Issuer should be "Let's Encrypt." Expiry should be ~90 days out.
+
+Use [SSL Labs](https://www.ssllabs.com/ssltest/) for a full report. Aim for A or A+.
+
+## Renewal
+
+Traefik renews certificates automatically. It checks expiry and requests a new cert when needed. No cron jobs, no certbot.
+
+Verify renewal is working: check Traefik logs around the 60-day mark, or inspect `traefik-letsencrypt` volume contents. The `acme.json` file holds certificate data.
+
+## Troubleshooting
+
+### Certificate not issued
+
+**DNS not propagated:** Let's Encrypt must reach your server at the domain. If DNS still points elsewhere, the challenge fails. Wait for propagation, then retry.
+
+**Port 80 blocked:** The HTTP challenge requires port 80. Ensure your firewall allows it:
+
+```bash
+sudo ufw allow 80
+sudo ufw allow 443
+sudo ufw enable
+```
+
+**Rate limits:** Let's Encrypt limits requests per domain (50 certs per week). If you're testing, use the staging server first:
+
+```yaml
+- "--certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+```
+
+Staging certs aren't trusted by browsers, but they confirm the flow works. Remove the line for production.
+
+### Mixed content warnings
+
+Your site loads over HTTPS but some assets (images, scripts) load over HTTP. Browsers block them. Fix by ensuring all URLs in your app use `https://` or relative paths.
+
+### Certificate for wrong domain
+
+Check your Traefik labels. The `Host()` rule must match the domain exactly. `Host(\`docs.yourcompany.com\`)` gets a cert for `docs.yourcompany.com`. A typo means a different cert—or failure.
+
+## Security Best Practices
+
+- **HSTS:** Add a header to force HTTPS. In Traefik, use middleware:
+  ```yaml
+  - "traefik.http.middlewares.secure.headers.stsSeconds=31536000"
+  - "traefik.http.middlewares.secure.headers.stsIncludeSubdomains=true"
+  ```
+- **Redirect HTTP to HTTPS:** Route port 80 to a redirect:
+  ```yaml
+  - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
+  - "traefik.http.routers.http-catchall.entrypoints=web"
+  - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
+  - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+  ```
+- **Backup acme.json:** The `traefik-letsencrypt` volume contains your certs. Back it up. If you lose it, you'll need to re-issue (and hit rate limits if you do it too often).
+
+With Traefik and Let's Encrypt, every app on your stack gets valid HTTPS with minimal effort. Once it's set up, you rarely need to think about it again.

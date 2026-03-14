@@ -1,0 +1,60 @@
+slug: formbricks
+name: Formbricks
+category: FORMS
+description: Open-source survey and form platform. Build beautiful surveys, collect responses, and analyze feedback with privacy-first approach.
+subdomain: forms
+tier: FREE
+dockerImage: formbricks/formbricks
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/formbricks/formbricks"
+port: 3000
+minRam: "512MB"
+license: AGPL_3
+deploymentComplexity: SIMPLE
+replaces:
+  - Typeform
+  - Qualtrics
+tags:
+  - forms
+  - surveys
+  - feedback
+  - data-collection
+  - privacy
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+envs:
+  - key: NEXTAUTH_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: NEXTAUTH_SECRET
+    generated: random64
+  - key: DATABASE_URL
+    template: "postgresql://{{ .DBUser }}:{{ .DBPassword }}@postgres:5432/{{ .DBName }}"
+  - key: ENCRYPTION_KEY
+    generated: random32
+volumes:
+  - name: data
+    path: /app/packages/web
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: false
+  hasBackupTool: false
+  hasMultiLanguage: false
+  hasAuditLog: false
+  hasGuestAccess: false
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 7
+meta:
+  website: "https://formbricks.com"
+  github: "https://github.com/formbricks/formbricks"
+  docs: "https://formbricks.com/docs"
+  logo: "formbricks.svg"

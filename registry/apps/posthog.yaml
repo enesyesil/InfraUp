@@ -1,0 +1,64 @@
+slug: posthog
+name: "PostHog"
+category: ANALYTICS
+description: "Product analytics platform with session replay, feature flags, and A/B testing. Alternative to Mixpanel and Amplitude."
+subdomain: posthog
+tier: FREE
+dockerImage: posthog/posthog
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/posthog/posthog"
+port: 8000
+minRam: "2GB"
+license: MIT
+deploymentComplexity: COMPLEX
+replaces:
+  - Mixpanel
+  - Amplitude
+tags:
+  - analytics
+  - product-analytics
+  - session-replay
+  - feature-flags
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+  - id: redis
+    type: CACHE
+    optional: false
+envs:
+  - key: SITE_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: SECRET_KEY
+    generated: random64
+  - key: DATABASE_URL
+    template: "postgres://{{ .DBUser }}:{{ .DBPassword }}@postgres:5432/{{ .DBName }}"
+  - key: REDIS_URL
+    value: "redis://redis:6379"
+  - key: NODE_ENV
+    value: "production"
+volumes:
+  - name: data
+    path: /var/posthog
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: true
+  hasBackupTool: false
+  hasMultiLanguage: false
+  hasAuditLog: true
+  hasGuestAccess: false
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 8
+meta:
+  website: "https://posthog.com"
+  github: "https://github.com/PostHog/posthog"
+  docs: "https://posthog.com/docs"
+  logo: "posthog.svg"

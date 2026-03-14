@@ -1,0 +1,65 @@
+slug: twenty
+name: "Twenty"
+category: CRM
+description: "Building a modern alternative to Salesforce, powered by the community. Open-source CRM with a beautiful UI and full customization."
+subdomain: crm
+tier: FREE
+dockerImage: twentycrm/twenty
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/twentycrm/twenty"
+port: 3000
+minRam: "512MB"
+license: AGPL_3
+deploymentComplexity: MODERATE
+replaces:
+  - "Salesforce"
+  - "HubSpot"
+  - "Pipedrive"
+tags:
+  - "crm"
+  - "sales"
+  - "contacts"
+  - "pipeline"
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+  - id: redis
+    type: CACHE
+    optional: false
+envs:
+  - key: FRONT_BASE_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: SERVER_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: SECRET_KEY
+    generated: random64
+  - key: DATABASE_URL
+    template: "postgres://{{ .DBUser }}:{{ .DBPassword }}@postgres:5432/{{ .DBName }}"
+  - key: REDIS_URL
+    value: "redis://redis:6379"
+volumes:
+  - name: data
+    path: /app/packages/twenty-server/src/workspace/workspace-sync-metadata
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: true
+  hasBackupTool: false
+  hasMultiLanguage: true
+  hasAuditLog: true
+  hasGuestAccess: false
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: true
+businessRelevance: 9
+meta:
+  website: "https://twenty.com"
+  github: "https://github.com/twentyhq/twenty"
+  docs: "https://docs.twenty.com"
+  logo: "twenty.svg"

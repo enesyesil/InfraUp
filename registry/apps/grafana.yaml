@@ -1,0 +1,55 @@
+slug: grafana
+name: Grafana
+category: MONITORING
+description: Open-source analytics and monitoring platform. Create dashboards, alerts, and explore metrics from any data source.
+subdomain: monitoring
+tier: FREE
+dockerImage: grafana/grafana
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/grafana/grafana"
+port: 3000
+minRam: "512MB"
+license: AGPL_3
+deploymentComplexity: MODERATE
+replaces:
+  - Datadog
+  - NewRelic
+tags:
+  - monitoring
+  - dashboards
+  - metrics
+  - observability
+  - analytics
+dependencies: []
+envs:
+  - key: GF_SERVER_ROOT_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: GF_SECURITY_ADMIN_PASSWORD
+    generated: random32
+  - key: GF_USERS_ALLOW_SIGN_UP
+    value: "false"
+volumes:
+  - name: data
+    path: /var/lib/grafana
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: true
+  hasBackupTool: false
+  hasMultiLanguage: true
+  hasAuditLog: true
+  hasGuestAccess: false
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 8
+meta:
+  website: "https://grafana.com"
+  github: "https://github.com/grafana/grafana"
+  docs: "https://grafana.com/docs"
+  logo: "grafana.svg"

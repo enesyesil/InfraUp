@@ -1,0 +1,32 @@
+---
+slug: mattermost
+lastReviewed: 2026-03-01
+---
+
+## What It Actually Is
+
+Mattermost is an open-source team messaging platform—Slack's self-hosted cousin. Channels, direct messages, threads, file sharing, integrations (webhooks, bots, apps), and a familiar chat UX. It's been around for years, has an enterprise edition, and is used by companies that need messaging behind their firewall.
+
+## Who It's For
+
+Teams that want Slack-like collaboration but must self-host for security, compliance, or data sovereignty. Enterprises, regulated industries, and privacy-conscious orgs. Developers who want to own their chat data and integrate with internal tools without vendor lock-in.
+
+## Key Features
+
+You get channels (public and private), DMs, group messages, threads, and reactions. File uploads, search, and @mentions work as expected. Integrations include incoming/outgoing webhooks, slash commands, and a plugin framework. The API is solid for building bots. LDAP/SSO is available in the enterprise tier. Mobile apps exist for iOS and Android.
+
+## Honest Tradeoffs
+
+The mobile apps lag behind Slack in polish and features. The free/team edition lacks some enterprise features (advanced compliance, audit logs, etc.) that require a license. The UI can feel dated in places. Integrations are fewer than Slack's app directory—you'll often build custom webhooks or bots.
+
+## Setup Gotchas
+
+First-time setup is straightforward with Docker, but LDAP/SSO configuration can be tricky. Make sure your reverse proxy passes WebSocket connections correctly or real-time updates will fail. The database can grow large with file attachments; plan retention and cleanup. Plugin compatibility varies by version—check before upgrading.
+
+## Compared To Alternatives
+
+**Rocket.Chat** has more features (video, screen share, etc.) but is heavier and more complex to run. **Zulip** uses a different model—topic-based threads per channel—which some teams love and others find confusing. Mattermost sits in the middle: familiar Slack-like UX, solid core, fewer bells and whistles than Rocket.Chat.
+
+## Real World Fit
+
+Mattermost fits orgs that need Slack-like messaging self-hosted and are okay with a slightly less polished experience. Best for 10–500 person teams in regulated or security-conscious industries. Not ideal if you want the Slack app ecosystem or the smoothest mobile experience—those are tradeoffs for ownership.

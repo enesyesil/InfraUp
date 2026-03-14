@@ -1,0 +1,71 @@
+slug: keycloak
+name: "Keycloak"
+category: AUTH
+description: "Open-source identity and access management with SSO, OAuth, and SAML. Alternative to Auth0 and Okta."
+subdomain: sso
+tier: FREE
+dockerImage: ghcr.io/keycloak/keycloak
+dockerRegistry: ghcr
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: ""
+port: 8080
+minRam: "512MB"
+license: APACHE_2
+deploymentComplexity: MODERATE
+replaces:
+  - Auth0
+  - Okta
+tags:
+  - sso
+  - identity
+  - oauth
+  - saml
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+envs:
+  - key: KEYCLOAK_ADMIN
+    value: "admin"
+  - key: KEYCLOAK_ADMIN_PASSWORD
+    generated: random32
+  - key: KC_DB
+    value: "postgres"
+  - key: KC_DB_URL
+    template: "jdbc:postgresql://postgres:5432/{{ .DBName }}"
+  - key: KC_DB_USERNAME
+    template: "{{ .DBUser }}"
+  - key: KC_DB_PASSWORD
+    template: "{{ .DBPassword }}"
+  - key: KC_HOSTNAME
+    template: "{{ .Subdomain }}.{{ .Domain }}"
+  - key: KC_HOSTNAME_STRICT
+    value: "false"
+  - key: KC_HTTP_ENABLED
+    value: "false"
+  - key: KC_PROXY
+    value: "edge"
+volumes:
+  - name: data
+    path: /opt/keycloak/data
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: true
+  hasBackupTool: false
+  hasMultiLanguage: true
+  hasAuditLog: true
+  hasGuestAccess: false
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 7
+meta:
+  website: "https://www.keycloak.org"
+  github: "https://github.com/keycloak/keycloak"
+  docs: "https://www.keycloak.org/documentation"
+  logo: "keycloak.svg"

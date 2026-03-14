@@ -1,0 +1,68 @@
+---
+title: "Self-Hosting vs SaaS: The True Cost Breakdown"
+date: "2026-03-08"
+author: "InfraUp Team"
+excerpt: "We break down the real costs of self-hosting versus SaaS for a 10-person startup."
+tags: ["analysis", "cost", "self-hosting"]
+---
+
+Let's run the numbers for a typical 10-person startup. No hand-waving—concrete figures, real tools, and an honest look at where self-hosting wins and where it doesn't.
+
+## The SaaS Stack
+
+Assume you're running a standard modern stack:
+
+| Tool | Per-user pricing | 10 people | Monthly cost |
+|------|------------------|-----------|--------------|
+| Notion (Team) | $16/user | 10 | $160 |
+| Slack (Pro) | $7.25/user | 10 | $72.50 |
+| Linear | $8/user | 10 | $80 |
+| Figma (Professional) | $12/editor | 5 editors | $60 |
+| Loom | $12.50/user | 10 | $125 |
+| Plausible (SaaS) | Flat | — | $19 |
+| **Total** | | | **$516.50** |
+
+That's over $6,200 per year—and we haven't included CRM, analytics, or automation tools. Add Twenty ($12/user), n8n Cloud ($20/user), or similar, and you're easily at $800–1,000/month.
+
+## The Self-Hosted Stack
+
+Same functionality, self-hosted:
+
+| Component | Cost |
+|-----------|------|
+| VPS (Hetzner CPX21: 4 vCPU, 8GB RAM) | €11.90 (~$13) |
+| Domain | ~$1/month (annualized) |
+| **Total** | **~$14/month** |
+
+On that single VPS you can run Outline (docs), Mattermost (chat), Plausible (analytics), Twenty (CRM), and n8n (automation). Linear and Figma don't have good self-hosted equivalents—we'll come back to that.
+
+## The Hidden Costs of Self-Hosting
+
+Hardware is cheap. Time isn't.
+
+**Initial setup:** Expect 4–8 hours to provision a VPS, install Docker, configure Traefik, and deploy your first few apps. If your time is worth $100/hour, that's $400–800 in one-time cost.
+
+**Ongoing maintenance:** Updates, security patches, and occasional debugging. Budget 2–4 hours per month. At $100/hour, that's $200–400/month in labor.
+
+**Break-even:** At $516/month SaaS vs $14 VPS + $300 maintenance = $314/month self-hosted, you're saving ~$200/month. Over a year, that's $2,400—enough to cover the initial setup and then some.
+
+But here's the catch: that maintenance cost assumes someone on your team can do it. If you're hiring a contractor at $150/hour for 3 hours/month, maintenance alone is $450—and suddenly SaaS looks cheaper.
+
+## When Self-Hosting Wins
+
+- **You have an engineer** who can spare a few hours per month. The marginal cost of their time is low if they're already on payroll.
+- **You care about data ownership.** Customer data, internal docs, and analytics stay on your infrastructure.
+- **You're scaling.** A 50-person team pays 5x the SaaS bill. A 50-person team on self-hosted pays the same $14 VPS (or a slightly larger one).
+- **You're in a regulated industry.** HIPAA, GDPR, or SOC2 may require data residency that SaaS can't guarantee.
+
+## When SaaS Wins
+
+- **No one can maintain it.** If your only engineer is 100% on product, don't self-host.
+- **You need specific tools.** Figma, Linear, and similar have no production-ready self-hosted alternatives. Use SaaS for those; self-host the rest.
+- **You're pre-revenue.** $500/month in tools might be worth the speed. Revisit when you have runway.
+
+## The Hybrid Approach
+
+Most teams should mix. Self-host Outline (Notion), Plausible (analytics), Mattermost (Slack for internal), and n8n (automation). Stay on Linear and Figma. You cut your bill by 40–60% while keeping the tools that don't have good alternatives.
+
+The true cost of self-hosting isn't the VPS—it's the person who keeps it running. If you have that person, the numbers work. If you don't, pay the SaaS tax and focus on shipping.

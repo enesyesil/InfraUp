@@ -1,0 +1,66 @@
+slug: wiki
+name: "Wiki.js"
+category: DOCS
+description: "A modern and powerful wiki app built on Node.js. Git-backed, with a beautiful and intuitive interface."
+subdomain: wiki-js
+tier: FREE
+dockerImage: ghcr.io/requarks/wiki
+dockerRegistry: ghcr
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/requarks/wiki"
+port: 3000
+minRam: "512MB"
+license: AGPL_3
+deploymentComplexity: MODERATE
+replaces:
+  - "Confluence"
+  - "GitBook"
+  - "Notion"
+tags:
+  - "wiki"
+  - "docs"
+  - "documentation"
+  - "knowledge-base"
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+envs:
+  - key: WIKI_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: DB_TYPE
+    value: "postgres"
+  - key: DB_HOST
+    value: "postgres"
+  - key: DB_PORT
+    value: "5432"
+  - key: DB_USER
+    template: "{{ .DBUser }}"
+  - key: DB_PASS
+    template: "{{ .DBPassword }}"
+  - key: DB_NAME
+    template: "{{ .DBName }}"
+volumes:
+  - name: data
+    path: /wiki/data
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: true
+  hasBackupTool: true
+  hasMultiLanguage: true
+  hasAuditLog: true
+  hasGuestAccess: true
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 6
+meta:
+  website: "https://js.wiki"
+  github: "https://github.com/requarks/wiki"
+  docs: "https://docs.requarks.io"
+  logo: "wiki.svg"

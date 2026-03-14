@@ -1,0 +1,32 @@
+---
+slug: analytics
+lastReviewed: 2026-03-01
+---
+
+## What It Actually Is
+
+Plausible Analytics is a privacy-focused web analytics tool that replaces Google Analytics. No cookies, no personal data collection, GDPR-friendly by design. You get page views, referrers, countries, devices, and goals—enough for most sites to understand traffic without the privacy concerns of GA.
+
+## Who It's For
+
+Site owners who care about privacy (their own and their visitors'), want lightweight scripts, and don't need the full GA feature set. Indie hackers, privacy-conscious companies, and anyone who's tired of cookie banners and consent complexity. If you've thought "we just need to know what pages get traffic," Plausible fits.
+
+## Key Features
+
+The dashboard is simple: unique visitors, page views, bounce rate, top pages, top referrers, countries, devices. The script is tiny (~1KB), so it doesn't slow your site. No cookies means no consent banners for basic analytics in many jurisdictions. You can set up custom goals (e.g., signup, purchase) and filter by UTM parameters.
+
+## Honest Tradeoffs
+
+Plausible has fewer features than Google Analytics—no custom dimensions, no user-level tracking, no advanced funnel analysis. The self-hosted version needs ClickHouse for event storage, which adds deployment complexity. Some teams will miss GA's depth; Plausible deliberately keeps the scope narrow.
+
+## Setup Gotchas
+
+The self-hosted deployment requires ClickHouse for event storage—it's not just Postgres. Follow the official Docker Compose setup; rolling your own is error-prone. The script snippet needs your exact domain; mismatches cause data to go nowhere. If you're used to GA's real-time view, Plausible's data has a short delay.
+
+## Compared To Alternatives
+
+**Umami** is simpler—single binary, SQLite or Postgres, fewer features. **Matomo** is more feature-rich and GA-like but heavier and more complex. **PostHog** is a different beast (product analytics, session replay, feature flags)—broader scope, different use case. Plausible sits in the middle: more than Umami, less than Matomo, focused on privacy-first page analytics.
+
+## Real World Fit
+
+Plausible fits sites that prioritize privacy and simplicity over analytics depth. Ideal for blogs, marketing sites, and SaaS landing pages where you need traffic insight without the overhead of GA or the complexity of Matomo. Not the right choice if you need user-level tracking or advanced attribution.

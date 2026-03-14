@@ -1,0 +1,66 @@
+slug: appsmith
+name: Appsmith
+category: INTERNAL_TOOLS
+description: Low-code platform for building internal tools. Self-host alternative to Retool with API, SSO, audit log, multi-language, and guest access.
+subdomain: apps
+tier: FREE
+dockerImage: appsmith/appsmith-ce
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/appsmith/appsmith-ce"
+port: 80
+minRam: "1GB"
+license: APACHE_2
+deploymentComplexity: MODERATE
+replaces:
+  - Retool
+tags:
+  - low-code
+  - internal-tools
+  - dashboard
+  - admin
+  - self-hosted
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+  - id: redis
+    type: CACHE
+    optional: false
+envs:
+  - key: APPSMITH_INSTANCE_NAME
+    value: "Appsmith"
+  - key: APPSMITH_CUSTOM_DOMAIN
+    template: "{{ .Subdomain }}.{{ .Domain }}"
+  - key: APPSMITH_MONGODB_URI
+    value: "mongodb://mongodb:27017/appsmith"
+  - key: APPSMITH_REDIS_URL
+    value: "redis://redis:6379"
+  - key: APPSMITH_ENCRYPTION_PASSWORD
+    generated: random32
+  - key: APPSMITH_ENCRYPTION_SALT
+    generated: random32
+volumes:
+  - name: data
+    path: /appsmith-stacks
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: true
+  hasBackupTool: false
+  hasMultiLanguage: true
+  hasAuditLog: true
+  hasGuestAccess: true
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 7
+meta:
+  website: "https://www.appsmith.com"
+  github: "https://github.com/appsmithorg/appsmith"
+  docs: "https://docs.appsmith.com"
+  logo: "appsmith.svg"

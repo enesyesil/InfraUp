@@ -1,0 +1,56 @@
+slug: rocket-chat
+name: "Rocket.Chat"
+category: MESSAGING
+description: "The Secure CommsOS for mission-critical operations. Open-source team chat with channels, video calls, and integrations."
+subdomain: rocket
+tier: FREE
+dockerImage: rocketchat/rocket.chat
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/rocketchat/rocket.chat"
+port: 3000
+minRam: "512MB"
+license: MIT
+deploymentComplexity: MODERATE
+replaces:
+  - "Slack"
+  - "Microsoft Teams"
+  - "Discord"
+tags:
+  - "chat"
+  - "messaging"
+  - "collaboration"
+  - "team-communication"
+dependencies:
+  - id: mongodb
+    type: DATABASE
+    optional: false
+envs:
+  - key: ROOT_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: MONGO_URL
+    template: "mongodb://{{ .DBUser }}:{{ .DBPassword }}@mongodb:27017/{{ .DBName }}"
+volumes:
+  - name: data
+    path: /app/uploads
+features:
+  hasApi: true
+  hasMobileApp: true
+  hasSSOSupport: true
+  hasBackupTool: false
+  hasMultiLanguage: true
+  hasAuditLog: true
+  hasGuestAccess: true
+  hasOfflineMode: true
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 7
+meta:
+  website: "https://rocket.chat"
+  github: "https://github.com/RocketChat/Rocket.Chat"
+  docs: "https://docs.rocket.chat"
+  logo: "rocket-chat.svg"

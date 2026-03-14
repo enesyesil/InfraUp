@@ -1,0 +1,78 @@
+slug: authentik
+name: "Authentik"
+category: AUTH
+description: "Flexible identity provider with SSO, LDAP, and OAuth. Self-hosted alternative to Okta and Auth0."
+subdomain: auth
+tier: FREE
+dockerImage: ghcr.io/goauthentik/server
+dockerRegistry: ghcr
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: ""
+port: 9000
+minRam: "512MB"
+license: MIT
+deploymentComplexity: MODERATE
+replaces:
+  - Okta
+  - Auth0
+tags:
+  - sso
+  - identity
+  - oauth
+  - ldap
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+  - id: redis
+    type: CACHE
+    optional: false
+envs:
+  - key: AUTHENTIK_SECRET_KEY
+    generated: random64
+  - key: AUTHENTIK_REDIS__HOST
+    value: "redis"
+  - key: AUTHENTIK_REDIS__PORT
+    value: "6379"
+  - key: AUTHENTIK_POSTGRESQL__HOST
+    value: "postgres"
+  - key: AUTHENTIK_POSTGRESQL__NAME
+    template: "{{ .DBName }}"
+  - key: AUTHENTIK_POSTGRESQL__USER
+    template: "{{ .DBUser }}"
+  - key: AUTHENTIK_POSTGRESQL__PASSWORD
+    template: "{{ .DBPassword }}"
+  - key: AUTHENTIK_POSTGRESQL__PORT
+    value: "5432"
+  - key: AUTHENTIK_COOKIE_DOMAIN
+    template: "{{ .Subdomain }}.{{ .Domain }}"
+  - key: AUTHENTIK_ERROR_REPORTING__ENABLED
+    value: "false"
+volumes:
+  - name: media
+    path: /media
+  - name: templates
+    path: /templates
+  - name: custom-templates
+    path: /custom-templates
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: true
+  hasBackupTool: false
+  hasMultiLanguage: true
+  hasAuditLog: true
+  hasGuestAccess: false
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 8
+meta:
+  website: "https://goauthentik.io"
+  github: "https://github.com/goauthentik/authentik"
+  docs: "https://goauthentik.io/docs"
+  logo: "authentik.svg"

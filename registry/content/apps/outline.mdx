@@ -1,0 +1,32 @@
+---
+slug: outline
+lastReviewed: 2026-03-01
+---
+
+## What It Actually Is
+
+Outline is a modern wiki and knowledge base that feels closer to Notion or Confluence than to traditional wikis. It ships with a beautiful rich-text editor, real-time collaboration (multiple people editing the same doc at once), and full Markdown support. Think of it as a docs tool that prioritizes writing experience over rigid structure.
+
+## Who It's For
+
+Teams that want a polished, Slack-era documentation experience without paying for Notion or Confluence. It suits product teams, engineering orgs, and anyone who values a clean editor over hierarchical book/chapter organization. If your team already lives in Slack and wants docs that feel native to that workflow, Outline fits.
+
+## Key Features
+
+The editor is the star: slash commands, inline formatting, embeds, and collaborative cursors. You get collections (like folders) and nested documents, but the hierarchy is flexible rather than prescriptive. Search works across all content, and you can integrate with Slack for notifications. SSO is supported for enterprise deployments. The whole thing runs as a single Node.js app with Postgres and Redis behind it.
+
+## Honest Tradeoffs
+
+Outline requires both Postgres and Redis—more moving parts than simpler wikis like BookStack. The auth setup can be fiddly: OAuth, SAML, or Google Workspace integration each has its own gotchas. There's no native mobile app, and the project has had periods of slower development. If you want something you can spin up in five minutes with minimal dependencies, this isn't it.
+
+## Setup Gotchas
+
+The `SECRET_KEY` environment variable must be exactly 32 bytes. Not 31, not 33—exactly 32. Many failed deployments trace back to this. Redis is mandatory; the app won't start without it. Make sure your `URL` env matches exactly what users type in the browser (including protocol and trailing slash behavior), or you'll see redirect loops.
+
+## Compared To Alternatives
+
+**BookStack** is simpler to self-host, uses less RAM, and has a clear book/chapter/page structure—better for formal documentation. **Wiki.js** is heavier and more feature-rich but also more complex. **AppFlowy** is newer and more Notion-like in some ways but less mature for team wikis.
+
+## Real World Fit
+
+Outline works best for teams of 5–50 who want a modern, collaborative docs experience and are willing to run Postgres + Redis. It's overkill for a personal wiki and underpowered for massive enterprise knowledge bases. The sweet spot is product and engineering teams that outgrew Google Docs and don't want to pay for Notion.

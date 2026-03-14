@@ -1,0 +1,18 @@
+id: postgres
+name: "PostgreSQL"
+type: DATABASE
+image: postgres:16-alpine
+port: 5432
+envs:
+  - key: POSTGRES_PASSWORD
+    generated: random32
+  - key: POSTGRES_USER
+    value: "app"
+  - key: POSTGRES_DB
+    template: "{{ .DBName }}"
+volumes:
+  - name: pgdata
+    path: /var/lib/postgresql/data
+resources:
+  memory: 256Mi
+  cpu: 100m

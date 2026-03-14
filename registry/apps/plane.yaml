@@ -1,0 +1,65 @@
+slug: plane
+name: "Plane"
+category: PROJECT_MANAGEMENT
+description: "Modern, open-source project management tool with issues, cycles, and roadmaps. Alternative to Jira, Linear, and ClickUp."
+subdomain: projects
+tier: FREE
+dockerImage: makeplane/plane-frontend
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/makeplane/plane-frontend"
+port: 3000
+minRam: "512MB"
+license: AGPL_3
+deploymentComplexity: MODERATE
+replaces:
+  - Jira
+  - Linear
+  - ClickUp
+tags:
+  - project-management
+  - issues
+  - roadmaps
+  - agile
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+  - id: redis
+    type: CACHE
+    optional: false
+envs:
+  - key: NEXT_PUBLIC_API_BASE_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: CORS_ALLOWED_ORIGINS
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: DATABASE_URL
+    template: "postgres://{{ .DBUser }}:{{ .DBPassword }}@postgres:5432/{{ .DBName }}"
+  - key: REDIS_URL
+    value: "redis://redis:6379"
+  - key: SECRET_KEY
+    generated: random64
+volumes:
+  - name: data
+    path: /app/data
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: true
+  hasBackupTool: false
+  hasMultiLanguage: false
+  hasAuditLog: false
+  hasGuestAccess: false
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: true
+businessRelevance: 8
+meta:
+  website: "https://plane.so"
+  github: "https://github.com/makeplane/plane"
+  docs: "https://docs.plane.so"
+  logo: "plane.svg"

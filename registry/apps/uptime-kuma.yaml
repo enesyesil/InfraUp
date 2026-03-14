@@ -1,0 +1,51 @@
+slug: uptime-kuma
+name: Uptime Kuma
+category: STATUS
+description: A fancy self-hosted monitoring tool for websites and services. Beautiful dashboard, status pages, and multi-protocol checks.
+subdomain: status
+tier: FREE
+dockerImage: louislam/uptime-kuma
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/louislam/uptime-kuma"
+port: 3001
+minRam: "512MB"
+license: MIT
+deploymentComplexity: SIMPLE
+replaces:
+  - BetterStack
+  - StatusCake
+tags:
+  - monitoring
+  - uptime
+  - status-page
+  - alerts
+  - self-hosted
+dependencies: []
+envs:
+  - key: UPTIME_KUMA_BASE_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+volumes:
+  - name: data
+    path: /app/data
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: false
+  hasBackupTool: false
+  hasMultiLanguage: true
+  hasAuditLog: false
+  hasGuestAccess: true
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: true
+businessRelevance: 8
+meta:
+  website: "https://uptime.kuma.pet"
+  github: "https://github.com/louislam/uptime-kuma"
+  docs: "https://github.com/louislam/uptime-kuma/wiki"
+  logo: "uptime-kuma.svg"

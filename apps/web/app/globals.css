@@ -1,0 +1,133 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --shadow-brutal-sm: 3px 3px 0px 0px #1a1a1a;
+  --shadow-brutal: 4px 4px 0px 0px #1a1a1a;
+  --shadow-brutal-lg: 6px 6px 0px 0px #1a1a1a;
+  --shadow-brutal-accent: 4px 4px 0px 0px #c0392b;
+  --shadow-brutal-accent-lg: 6px 6px 0px 0px #c0392b;
+}
+
+@layer base {
+  body {
+    @apply text-ink font-body antialiased;
+    background-color: #ffffff;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-serif;
+  }
+
+  code,
+  pre,
+  kbd {
+    @apply font-mono;
+  }
+
+  ::selection {
+    @apply bg-ink text-white;
+  }
+}
+
+@layer components {
+  .ruled-border {
+    @apply border-ink border-2;
+  }
+
+  .ruled-border-thin {
+    @apply border-ink border;
+  }
+
+  .ruled-divider {
+    @apply border-t-2 border-ink;
+  }
+
+  .eyebrow {
+    @apply font-mono text-xs uppercase tracking-[0.2em] text-ink/70;
+  }
+
+  .section-heading {
+    @apply font-serif text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-6 py-3 font-mono text-sm uppercase tracking-wider
+           bg-ink text-white border-2 border-ink
+           transition-all duration-150;
+    box-shadow: var(--shadow-brutal-sm);
+  }
+  .btn-primary:hover {
+    @apply bg-white text-ink -translate-y-0.5;
+    box-shadow: var(--shadow-brutal);
+  }
+
+  .btn-accent {
+    @apply inline-flex items-center justify-center px-6 py-3 font-mono text-sm uppercase tracking-wider
+           bg-accent text-white border-2 border-accent
+           transition-all duration-150;
+    box-shadow: var(--shadow-brutal-accent);
+  }
+  .btn-accent:hover {
+    @apply bg-white text-accent -translate-y-0.5;
+    box-shadow: var(--shadow-brutal-accent-lg);
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center px-6 py-3 font-mono text-sm uppercase tracking-wider
+           bg-white text-ink border-2 border-ink
+           transition-all duration-150;
+    box-shadow: var(--shadow-brutal-sm);
+  }
+  .btn-outline:hover {
+    @apply bg-ink text-white -translate-y-0.5;
+    box-shadow: var(--shadow-brutal);
+  }
+
+  .card {
+    @apply border-2 border-ink bg-white p-6 transition-all duration-150
+           hover:-translate-y-0.5 hover:-translate-x-0.5;
+    box-shadow: var(--shadow-brutal-sm);
+  }
+  .card:hover {
+    box-shadow: var(--shadow-brutal);
+  }
+
+  .pricing-card {
+    box-shadow: var(--shadow-brutal-sm);
+  }
+  .pricing-card:hover {
+    box-shadow: var(--shadow-brutal);
+  }
+  .pricing-card--highlight {
+    box-shadow: var(--shadow-brutal-accent);
+  }
+  .pricing-card--highlight:hover {
+    box-shadow: var(--shadow-brutal-accent-lg);
+  }
+
+  .badge {
+    @apply inline-flex items-center px-2 py-0.5 font-mono text-xs uppercase tracking-wider border border-ink;
+  }
+
+  .code-block {
+    @apply bg-ink text-white p-4 font-mono text-sm overflow-x-auto;
+  }
+}
+
+@layer utilities {
+  .stamp {
+    @apply inline-block px-4 py-1 font-mono text-xs uppercase tracking-[0.2em]
+           border-2 border-accent text-accent rotate-[-2deg];
+  }
+
+  .stamp-solid {
+    @apply inline-block px-4 py-2 font-mono text-sm uppercase tracking-[0.15em]
+           bg-accent text-white border-2 border-accent rotate-[-3deg];
+  }
+}

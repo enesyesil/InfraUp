@@ -1,0 +1,67 @@
+slug: listmonk
+name: "Listmonk"
+category: EMAIL_MARKETING
+description: "High-performance, self-hosted newsletter and mailing list manager. Alternative to Mailchimp and CampaignMonitor."
+subdomain: mail
+tier: FREE
+dockerImage: listmonk/listmonk
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/listmonk/listmonk"
+port: 9000
+minRam: "512MB"
+license: AGPL_3
+deploymentComplexity: SIMPLE
+replaces:
+  - Mailchimp
+  - CampaignMonitor
+tags:
+  - email
+  - newsletter
+  - mailing-list
+  - marketing
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+envs:
+  - key: listmonk_app__address
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: listmonk_db__host
+    value: "postgres"
+  - key: listmonk_db__port
+    value: "5432"
+  - key: listmonk_db__user
+    template: "{{ .DBUser }}"
+  - key: listmonk_db__password
+    template: "{{ .DBPassword }}"
+  - key: listmonk_db__database
+    template: "{{ .DBName }}"
+  - key: listmonk_app__admin_username
+    value: "listmonk"
+  - key: listmonk_app__admin_password
+    generated: random32
+volumes:
+  - name: data
+    path: /listmonk/data
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: false
+  hasBackupTool: false
+  hasMultiLanguage: false
+  hasAuditLog: false
+  hasGuestAccess: false
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 8
+meta:
+  website: "https://listmonk.app"
+  github: "https://github.com/knadh/listmonk"
+  docs: "https://listmonk.app/docs"
+  logo: "listmonk.svg"

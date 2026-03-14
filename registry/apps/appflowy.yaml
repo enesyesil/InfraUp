@@ -1,0 +1,66 @@
+slug: appflowy
+name: "AppFlowy"
+category: DOCS
+description: "The leading open source Notion alternative. Bring projects, wikis, and teams together with AI. Collaborative workspace where you achieve more without losing control of your data."
+subdomain: notes
+tier: FREE
+dockerImage: appflowyio/appflowy-cloud
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/appflowyio/appflowy-cloud"
+port: 9000
+minRam: "512MB"
+license: AGPL_3
+deploymentComplexity: MODERATE
+replaces:
+  - "Notion"
+  - "Confluence"
+  - "Coda"
+tags:
+  - "docs"
+  - "notes"
+  - "wiki"
+  - "collaboration"
+  - "notion-alternative"
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+  - id: redis
+    type: CACHE
+    optional: false
+envs:
+  - key: URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: SECRET_KEY
+    generated: random64
+  - key: DATABASE_URL
+    template: "postgres://{{ .DBUser }}:{{ .DBPassword }}@postgres:5432/{{ .DBName }}"
+  - key: REDIS_URL
+    value: "redis://redis:6379"
+  - key: NODE_ENV
+    value: "production"
+volumes:
+  - name: data
+    path: /var/lib/appflowy/data
+features:
+  hasApi: true
+  hasMobileApp: true
+  hasSSOSupport: false
+  hasBackupTool: false
+  hasMultiLanguage: true
+  hasAuditLog: false
+  hasGuestAccess: false
+  hasOfflineMode: true
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: true
+businessRelevance: 8
+meta:
+  website: "https://appflowy.com"
+  github: "https://github.com/AppFlowy-IO/AppFlowy"
+  docs: "https://docs.appflowy.com"
+  logo: "appflowy.svg"

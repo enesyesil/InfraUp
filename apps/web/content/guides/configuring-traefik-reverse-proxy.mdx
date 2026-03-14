@@ -1,0 +1,131 @@
+---
+title: "Configuring Traefik as a Reverse Proxy"
+description: "Set up Traefik with automatic SSL certificates for your self-hosted apps."
+category: "infrastructure"
+order: 4
+---
+
+A reverse proxy sits in front of your apps and routes incoming requests. When someone visits `docs.yourcompany.com`, Traefik forwards that request to your Outline container. When they visit `analytics.yourcompany.com`, it goes to Plausible. One entry point, multiple backends.
+
+Traefik also handles SSL—it talks to Let's Encrypt, gets certificates, and renews them automatically. You get HTTPS without running certbot manually.
+
+## What You Need
+
+- Docker installed (see the [Docker setup guide](/guides/setting-up-docker-on-ubuntu))
+- A domain with DNS control
+- Ports 80 and 443 open on your server's firewall
+
+## DNS Setup
+
+Point your domain (or subdomains) at your server's IP:
+
+```
+docs.yourcompany.com    A    your-server-ip
+app.yourcompany.com     A    your-server-ip
+```
+
+Use a wildcard if you prefer: `*.yourcompany.com A your-server-ip`. Wait for DNS to propagate (a few minutes to a few hours).
+
+## Traefik Docker Compose
+
+Create a directory for Traefik:
+
+```bash
+mkdir -p ~/traefik && cd ~/traefik
+```
+
+Create `docker-compose.yml`:
+
+```yaml
+services:
+  traefik:
+    image: traefik:v3.2
+    command:
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.letsencrypt.acme.email=you@yourcompany.com"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "traefik-letsencrypt:/letsencrypt"
+      - "traefik-config:/etc/traefik"
+    restart: unless-stopped
+
+volumes:
+  traefik-letsencrypt:
+  traefik-config:
+```
+
+Replace `you@yourcompany.com` with your email—Let's Encrypt uses it for expiry notifications.
+
+## Add Labels to Your Apps
+
+Traefik discovers containers via Docker labels. For each app, add labels to its service. Example for Outline:
+
+```yaml
+services:
+  outline:
+    image: outlinewiki/outline:latest
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.outline.rule=Host(`docs.yourcompany.com`)"
+      - "traefik.http.routers.outline.entrypoints=websecure"
+      - "traefik.http.routers.outline.tls.certresolver=letsencrypt"
+      - "traefik.http.services.outline.loadbalancer.server.port=3000"
+```
+
+- `traefik.enable=true` — Include this container in routing
+- `rule=Host(...)` — Route requests for this hostname to this container
+- `entrypoints=websecure` — Use HTTPS (port 443)
+- `tls.certresolver=letsencrypt` — Get cert from Let's Encrypt
+- `loadbalancer.server.port=3000` — The port the app listens on inside the container
+
+## Run Traefik
+
+From the `~/traefik` directory:
+
+```bash
+docker compose up -d
+```
+
+Check logs:
+
+```bash
+docker compose logs -f
+```
+
+On first request to `https://docs.yourcompany.com`, Traefik will request a certificate. It may take 10–30 seconds. After that, HTTPS works.
+
+## Optional: Dashboard
+
+To enable the Traefik dashboard at `https://traefik.yourcompany.com`, add a dashboard service:
+
+```yaml
+  traefik:
+    # ... existing config ...
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.yourcompany.com`)"
+      - "traefik.http.routers.traefik.entrypoints=websecure"
+      - "traefik.http.routers.traefik.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.routers.traefik.middlewares=traefik-auth"
+      - "traefik.http.middlewares.traefik-auth.basicauth.users=admin:$$apr1$$..."
+```
+
+Generate the basic auth hash with:
+
+```bash
+echo $(htpasswd -nb admin your-password) | sed -e s/\\$/\\$\\$/g
+```
+
+## Next Steps
+
+Traefik and Let's Encrypt work together out of the box. For more detail on SSL—renewal, troubleshooting, and common issues—see [setting up SSL with Let's Encrypt](/guides/setting-up-ssl-with-lets-encrypt).

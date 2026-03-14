@@ -1,0 +1,75 @@
+slug: directus
+name: Directus
+category: CMS
+description: Headless CMS and data platform. Self-host alternative to Contentful and Airtable with API, SSO, multi-language, and guest access.
+subdomain: directus
+tier: FREE
+dockerImage: directus/directus
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/directus/directus"
+port: 8055
+minRam: "512MB"
+license: BSL
+deploymentComplexity: MODERATE
+replaces:
+  - Contentful
+  - Airtable
+tags:
+  - cms
+  - headless
+  - database
+  - api
+  - self-hosted
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+  - id: redis
+    type: CACHE
+    optional: false
+envs:
+  - key: PUBLIC_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: KEY
+    generated: random32
+  - key: SECRET
+    generated: random32
+  - key: DB_CLIENT
+    value: "pg"
+  - key: DB_HOST
+    value: "postgres"
+  - key: DB_PORT
+    value: "5432"
+  - key: DB_DATABASE
+    template: "{{ .DBName }}"
+  - key: DB_USER
+    template: "{{ .DBUser }}"
+  - key: DB_PASSWORD
+    template: "{{ .DBPassword }}"
+  - key: REDIS
+    value: "redis://redis:6379"
+volumes:
+  - name: data
+    path: /directus/uploads
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: true
+  hasBackupTool: false
+  hasMultiLanguage: true
+  hasAuditLog: false
+  hasGuestAccess: true
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 7
+meta:
+  website: "https://directus.io"
+  github: "https://github.com/directus/directus"
+  docs: "https://docs.directus.io"
+  logo: "directus.svg"

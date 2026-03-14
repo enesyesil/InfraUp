@@ -1,0 +1,64 @@
+slug: matomo
+name: "Matomo"
+category: ANALYTICS
+description: "Privacy-focused web analytics platform with full data ownership. Alternative to Google Analytics with advanced features."
+subdomain: matomo
+tier: FREE
+dockerImage: matomo/matomo
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/matomo/matomo"
+port: 80
+minRam: "512MB"
+license: GPL_3
+deploymentComplexity: MODERATE
+replaces:
+  - Google Analytics
+tags:
+  - analytics
+  - privacy
+  - web-stats
+  - self-hosted
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+envs:
+  - key: MATOMO_HOST
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: MATOMO_DATABASE_HOST
+    value: "postgres"
+  - key: MATOMO_DATABASE_USERNAME
+    template: "{{ .DBUser }}"
+  - key: MATOMO_DATABASE_PASSWORD
+    template: "{{ .DBPassword }}"
+  - key: MATOMO_DATABASE_DBNAME
+    template: "{{ .DBName }}"
+  - key: MATOMO_DATABASE_ADAPTER
+    value: "Mysql"
+  - key: MATOMO_DATABASE_TABLES_PREFIX
+    value: "matomo_"
+volumes:
+  - name: data
+    path: /var/www/html
+features:
+  hasApi: true
+  hasMobileApp: true
+  hasSSOSupport: false
+  hasBackupTool: false
+  hasMultiLanguage: true
+  hasAuditLog: false
+  hasGuestAccess: false
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 6
+meta:
+  website: "https://matomo.org"
+  github: "https://github.com/matomo-org/matomo"
+  docs: "https://matomo.org/docs/"
+  logo: "matomo.svg"

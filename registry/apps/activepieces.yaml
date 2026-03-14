@@ -1,0 +1,63 @@
+slug: activepieces
+name: Activepieces
+category: AUTOMATION
+description: Open-source Zapier and Make alternative. Connect apps, automate workflows, and build integrations with 200+ pieces.
+subdomain: flows
+tier: FREE
+dockerImage: activepieces/activepieces
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/activepieces/activepieces"
+port: 8080
+minRam: "512MB"
+license: MIT
+deploymentComplexity: MODERATE
+replaces:
+  - Zapier
+  - Make
+tags:
+  - automation
+  - workflows
+  - integrations
+  - no-code
+  - self-hosted
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+  - id: redis
+    type: CACHE
+    optional: false
+envs:
+  - key: AP_BASE_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: AP_ENCRYPTION_KEY
+    generated: random32
+  - key: DATABASE_URL
+    template: "postgresql://{{ .DBUser }}:{{ .DBPassword }}@postgres:5432/{{ .DBName }}"
+  - key: REDIS_URL
+    value: "redis://redis:6379"
+volumes:
+  - name: data
+    path: /app/data
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: false
+  hasBackupTool: false
+  hasMultiLanguage: true
+  hasAuditLog: false
+  hasGuestAccess: false
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 7
+meta:
+  website: "https://activepieces.com"
+  github: "https://github.com/activepieces/activepieces"
+  docs: "https://activepieces.com/docs"
+  logo: "activepieces.svg"

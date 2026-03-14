@@ -1,0 +1,64 @@
+slug: tooljet
+name: ToolJet
+category: INTERNAL_TOOLS
+description: Low-code platform for building internal tools. Self-host alternative to Retool with API, SSO, audit log, and multi-language support.
+subdomain: tooljet
+tier: FREE
+dockerImage: tooljet/tooljet-ce
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/tooljet/tooljet-ce"
+port: 80
+minRam: "512MB"
+license: AGPL_3
+deploymentComplexity: MODERATE
+replaces:
+  - Retool
+tags:
+  - low-code
+  - internal-tools
+  - dashboard
+  - automation
+  - self-hosted
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+  - id: redis
+    type: CACHE
+    optional: false
+envs:
+  - key: TOOLJET_HOST
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: DATABASE_URL
+    template: "postgresql://{{ .DBUser }}:{{ .DBPassword }}@postgres:5432/{{ .DBName }}"
+  - key: SECRET_KEY_BASE
+    generated: random64
+  - key: REDIS_URL
+    value: "redis://redis:6379"
+  - key: LOCKBOX_MASTER_KEY
+    generated: random32
+volumes:
+  - name: data
+    path: /app/storage
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: true
+  hasBackupTool: false
+  hasMultiLanguage: true
+  hasAuditLog: true
+  hasGuestAccess: false
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 6
+meta:
+  website: "https://tooljet.com"
+  github: "https://github.com/ToolJet/ToolJet"
+  docs: "https://docs.tooljet.com"
+  logo: "tooljet.svg"

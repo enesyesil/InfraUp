@@ -1,0 +1,16 @@
+id: minio
+name: "MinIO"
+type: OBJECT_STORAGE
+image: minio/minio:latest
+port: 9000
+envs:
+  - key: MINIO_ROOT_USER
+    value: "minioadmin"
+  - key: MINIO_ROOT_PASSWORD
+    generated: random32
+volumes:
+  - name: miniodata
+    path: /data
+resources:
+  memory: 256Mi
+  cpu: 100m

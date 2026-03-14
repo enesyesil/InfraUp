@@ -1,0 +1,32 @@
+---
+slug: chatwoot
+lastReviewed: 2026-03-01
+---
+
+## What It Actually Is
+
+Chatwoot is an omnichannel customer engagement platform—chat widget, email, social (Facebook, Twitter, WhatsApp), and more, all in one inbox. It replaces Intercom, Zendesk, or Freshdesk for teams that want to own their support stack. You get a shared inbox, canned responses, assignments, and conversation history.
+
+## Who It's For
+
+Support teams that handle multiple channels (website chat, email, social DMs) and want a single place to manage everything. Startups and SMBs that can't justify Intercom pricing. Companies that need to keep customer data on their own infrastructure for compliance or preference.
+
+## Key Features
+
+The core is a unified inbox: all conversations from chat, email, and connected social accounts land in one queue. You can assign conversations, add internal notes, use canned replies, and track resolution. The chat widget is embeddable and customizable. There's an API for custom integrations. Teams, inboxes, and agents are all configurable.
+
+## Honest Tradeoffs
+
+Chatwoot can be resource-intensive—Ruby on Rails, Sidekiq for background jobs, Redis, and Postgres. A small instance might feel sluggish. The setup is more involved than a simple helpdesk because of the background job infrastructure. Some advanced features (e.g., advanced reporting) are less polished than in commercial tools.
+
+## Setup Gotchas
+
+Sidekiq is required for sending emails, processing webhooks, and other async tasks. If Sidekiq isn't running or misconfigured, messages won't send and integrations will fail silently. Make sure Redis is healthy. The chat widget needs a valid frontend URL; misconfiguration leads to CORS or connection errors.
+
+## Compared To Alternatives
+
+**FreeScout** is simpler—email-only, HelpScout clone, lighter footprint. **Zammad** is more ticketing-focused, with a stronger emphasis on email and phone. Chatwoot wins on omnichannel and modern chat-first UX; the others win on simplicity or traditional helpdesk workflows.
+
+## Real World Fit
+
+Chatwoot suits teams that need chat + email + social in one place and are willing to run a heavier stack. It's overkill for email-only support (FreeScout is better) and underpowered compared to Zendesk for massive enterprise scale. Best for 5–50 person support orgs with multi-channel needs.

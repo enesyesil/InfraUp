@@ -1,0 +1,76 @@
+---
+title: "Best Self-Hosted Notion Alternatives in 2026"
+date: "2026-03-05"
+author: "InfraUp Team"
+excerpt: "A practical comparison of Outline, BookStack, AppFlowy, and Wiki.js for teams looking to replace Notion."
+tags: ["comparison", "docs", "notion"]
+---
+
+Notion has become the default for startup wikis, but at $16/user/month for the Team plan, the bill adds up fast. If you're considering self-hosting a docs/wiki tool, here's how the main options stack up in 2026.
+
+## Outline
+
+**What it is:** A modern wiki built by the team behind Abstract. Markdown-based, real-time collaboration, Slack integration.
+
+**RAM:** ~512MB–1GB idle, 1–2GB under load. Comfortable on a 2GB VPS with other light services.
+
+**Deployment:** Docker Compose, PostgreSQL, Redis. Straightforward if you're used to containerized apps. OAuth setup (Google, Slack, etc.) requires a bit of config.
+
+**Best for:** Teams that want something close to Notion—nested pages, rich editing, search. Good for product docs, runbooks, and internal knowledge bases. The UI feels familiar to Notion users.
+
+**Caveats:** No native mobile app. The project has had periods of slower development; check the GitHub for recent activity before committing.
+
+## BookStack
+
+**What it is:** A simple, book-style wiki. Chapters, pages, and shelves. Very "library" metaphor.
+
+**RAM:** ~256–512MB. One of the lightest options.
+
+**Deployment:** PHP + MySQL/MariaDB. Can run in Docker. No Redis or complex dependencies. Easiest to get running.
+
+**Best for:** Documentation that benefits from hierarchy—manuals, SOPs, technical docs. Less suited to freeform brainstorming. Great if you want something that "just works" with minimal fuss.
+
+**Caveats:** The editor is simpler than Notion. No real-time collaboration. Feels more like a traditional wiki than a modern doc tool.
+
+## AppFlowy
+
+**What it is:** An open-source Notion clone built with Flutter. Desktop and mobile apps, cloud sync optional.
+
+**RAM:** N/A for server—it's primarily a desktop/mobile app. The cloud component (AppFlowy Cloud) is optional and can be self-hosted for sync.
+
+**Deployment:** AppFlowy itself runs locally. For self-hosted sync, you'd run AppFlowy Cloud—still early and less documented than the others.
+
+**Best for:** Individuals or small teams who want a Notion-like experience offline. Strong for personal knowledge management. Less proven for team wikis.
+
+**Caveats:** The self-hosted cloud/sync story is newer. If you need a central server that everyone hits in a browser, Outline or BookStack are safer bets.
+
+## Wiki.js
+
+**What it is:** A wiki engine with a powerful editor, Git sync, and multi-source authentication.
+
+**RAM:** ~512MB–1GB. Node.js-based.
+
+**Deployment:** Docker, supports PostgreSQL, MySQL, or SQLite. Can sync content to Git—useful if you want docs in version control.
+
+**Best for:** Teams that want Git-backed docs, or need to pull content from external sources. Good editor, good search. More "developer wiki" than "product wiki."
+
+**Caveats:** The Git sync is a killer feature but adds complexity. Slightly steeper learning curve than BookStack.
+
+## Quick Comparison
+
+| | Outline | BookStack | AppFlowy | Wiki.js |
+|--|---------|-----------|----------|---------|
+| **RAM (typical)** | 1–2GB | 256–512MB | N/A (local) | 512MB–1GB |
+| **Deployment** | Medium | Easy | N/A / Early | Medium |
+| **Notion-like UX** | Yes | No | Yes | Partial |
+| **Real-time collab** | Yes | No | Yes (local) | No |
+| **Best use case** | Team wiki, product docs | Manuals, SOPs | Personal/small team | Dev docs, Git-backed |
+
+## Recommendation
+
+- **Want the closest Notion replacement for a team?** → Outline.
+- **Want the simplest setup and don't need real-time collab?** → BookStack.
+- **Want desktop-first with optional sync?** → AppFlowy.
+- **Want Git-backed docs and developer workflows?** → Wiki.js.
+
+For most startups replacing Notion, Outline is the default choice—it matches the mental model, has reasonable resource needs, and deploys cleanly. BookStack is the pick if you want minimal overhead and a more structured, manual-style wiki.

@@ -1,0 +1,70 @@
+slug: n8n
+name: n8n
+category: AUTOMATION
+description: Fair-code workflow automation platform with native AI capabilities. Visual building, 400+ integrations, self-host or cloud.
+subdomain: automate
+tier: FREE
+dockerImage: n8nio/n8n
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/n8nio/n8n"
+port: 5678
+minRam: "512MB"
+license: OTHER
+deploymentComplexity: MODERATE
+replaces:
+  - Zapier
+  - Make
+tags:
+  - automation
+  - workflows
+  - integrations
+  - no-code
+  - ai
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+envs:
+  - key: N8N_HOST
+    template: "{{ .Subdomain }}.{{ .Domain }}"
+  - key: N8N_PROTOCOL
+    value: "https"
+  - key: N8N_ENCRYPTION_KEY
+    generated: random32
+  - key: DB_TYPE
+    value: "postgresdb"
+  - key: DB_POSTGRESDB_HOST
+    value: "postgres"
+  - key: DB_POSTGRESDB_PORT
+    value: "5432"
+  - key: DB_POSTGRESDB_DATABASE
+    template: "{{ .DBName }}"
+  - key: DB_POSTGRESDB_USER
+    template: "{{ .DBUser }}"
+  - key: DB_POSTGRESDB_PASSWORD
+    template: "{{ .DBPassword }}"
+volumes:
+  - name: data
+    path: /home/node/.n8n
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: true
+  hasBackupTool: false
+  hasMultiLanguage: false
+  hasAuditLog: false
+  hasGuestAccess: false
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: true
+businessRelevance: 9
+meta:
+  website: "https://n8n.io"
+  github: "https://github.com/n8n-io/n8n"
+  docs: "https://docs.n8n.io"
+  logo: "n8n.svg"

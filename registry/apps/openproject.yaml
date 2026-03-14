@@ -1,0 +1,60 @@
+slug: openproject
+name: "OpenProject"
+category: PROJECT_MANAGEMENT
+description: "Open-source project management software with agile boards, Gantt charts, and time tracking. Alternative to Jira, Asana, and Monday."
+subdomain: projects-op
+tier: FREE
+dockerImage: openproject/openproject
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/openproject/openproject"
+port: 8080
+minRam: "1GB"
+license: GPL_3
+deploymentComplexity: MODERATE
+replaces:
+  - Jira
+  - Asana
+  - Monday
+tags:
+  - project-management
+  - agile
+  - gantt
+  - time-tracking
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+envs:
+  - key: SECRET_KEY_BASE
+    generated: random64
+  - key: OPENPROJECT_HOST__NAME
+    template: "{{ .Subdomain }}.{{ .Domain }}"
+  - key: OPENPROJECT_HTTPS
+    value: "true"
+  - key: DATABASE_URL
+    template: "postgres://{{ .DBUser }}:{{ .DBPassword }}@postgres:5432/{{ .DBName }}"
+volumes:
+  - name: data
+    path: /var/openproject/assets
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: true
+  hasBackupTool: false
+  hasMultiLanguage: true
+  hasAuditLog: false
+  hasGuestAccess: true
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 6
+meta:
+  website: "https://www.openproject.org"
+  github: "https://github.com/opf/openproject"
+  docs: "https://www.openproject.org/docs"
+  logo: "openproject.svg"

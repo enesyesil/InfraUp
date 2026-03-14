@@ -1,0 +1,66 @@
+slug: akaunting
+name: Akaunting
+category: FINANCE
+description: Free and online accounting software for small businesses. Self-host alternative to QuickBooks and Xero with API and multi-language support.
+subdomain: accounting
+tier: FREE
+dockerImage: akaunting/akaunting
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/akaunting/akaunting"
+port: 80
+minRam: "512MB"
+license: GPL_3
+deploymentComplexity: MODERATE
+replaces:
+  - QuickBooks
+  - Xero
+tags:
+  - accounting
+  - finance
+  - invoicing
+  - bookkeeping
+  - self-hosted
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+envs:
+  - key: APP_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: DB_CONNECTION
+    value: "pgsql"
+  - key: DB_HOST
+    value: "postgres"
+  - key: DB_DATABASE
+    template: "{{ .DBName }}"
+  - key: DB_USERNAME
+    template: "{{ .DBUser }}"
+  - key: DB_PASSWORD
+    template: "{{ .DBPassword }}"
+  - key: APP_KEY
+    generated: random32
+volumes:
+  - name: data
+    path: /var/www/html/storage
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: false
+  hasBackupTool: false
+  hasMultiLanguage: true
+  hasAuditLog: false
+  hasGuestAccess: false
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 6
+meta:
+  website: "https://akaunting.com"
+  github: "https://github.com/akaunting/akaunting"
+  docs: "https://akaunting.com/docs"
+  logo: "akaunting.svg"

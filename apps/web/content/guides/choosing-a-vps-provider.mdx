@@ -1,0 +1,82 @@
+---
+title: "Choosing a VPS Provider"
+description: "Compare Hetzner, DigitalOcean, Vultr, and others for self-hosting."
+category: "infrastructure"
+order: 2
+---
+
+Your VPS is the foundation of your self-hosted stack. Pick a provider that offers good value, a region close to your users, and a management UI you can live with. Here's how the main options compare.
+
+## Hetzner
+
+**Pricing:** €4.51/month for CX22 (2 vCPU, 4GB RAM). €11.90/month for CPX21 (4 vCPU, 8GB RAM). Best price-to-spec ratio in the market.
+
+**Regions:** Germany, Finland, USA (Ashburn, Hillsboro). EU-focused; US presence is newer.
+
+**Pros:** Extremely cheap. Reliable. Good bandwidth. Simple control panel.
+
+**Cons:** EU data residency may matter for GDPR—or may not, depending on your users. Support is adequate but not hand-holding.
+
+**Best for:** Cost-conscious teams. EU-based startups. Anyone running multiple apps on a single box.
+
+## DigitalOcean
+
+**Pricing:** $6/month for Basic Droplet (1 vCPU, 1GB RAM). $12/month for 2 vCPU, 2GB RAM. $24/month for 2 vCPU, 4GB RAM. More expensive than Hetzner for equivalent specs.
+
+**Regions:** Global—NYC, SF, Amsterdam, Singapore, Bangalore, and more.
+
+**Pros:** Excellent documentation. Beginner-friendly. One-click Docker images. Predictable billing. Great support.
+
+**Cons:** You pay a premium for the polish. Same specs cost 2–3x Hetzner.
+
+**Best for:** First-time self-hosters. Teams that value documentation and support over raw cost.
+
+## Vultr
+
+**Pricing:** $6/month for 1 vCPU, 1GB RAM. $12/month for 1 vCPU, 2GB RAM. $24/month for 2 vCPU, 4GB RAM. Slightly cheaper than DigitalOcean, not as cheap as Hetzner.
+
+**Regions:** 25+ locations worldwide. Strong global presence.
+
+**Pros:** Many regions. Hourly billing. Easy to spin up and tear down. Good for testing.
+
+**Cons:** Support quality varies. Some users report occasional network hiccups.
+
+**Best for:** Teams that need a specific region. Projects where you might scale up/down frequently.
+
+## Linode (Akamai)
+
+**Pricing:** $5/month for 1 vCPU, 1GB RAM. $12/month for 1 vCPU, 2GB RAM. $24/month for 2 vCPU, 4GB RAM. Similar to Vultr.
+
+**Regions:** 11 global data centers. Now part of Akamai (CDN giant).
+
+**Pros:** Long-standing reputation. Good network. Managed Kubernetes and LKE if you outgrow single-node.
+
+**Cons:** UI feels dated compared to DigitalOcean. Pricing not as aggressive as Hetzner.
+
+**Best for:** Teams that want a stable, established provider. Kubernetes users.
+
+## Quick Comparison
+
+| Provider | 4GB RAM | 8GB RAM | Regions | Best for |
+|----------|---------|---------|---------|----------|
+| Hetzner | ~€5 | ~€12 | EU, US | Best value |
+| DigitalOcean | $24 | $48 | Global | Beginners |
+| Vultr | $24 | $48 | 25+ | Global presence |
+| Linode | $24 | $48 | 11 | Stability |
+
+## Recommendation
+
+- **Maximize value:** Hetzner. You get 2x the resources for the same price.
+- **First time, want hand-holding:** DigitalOcean. Docs and support are worth the premium.
+- **Need a specific region:** Check Vultr's list—they have more locations than anyone.
+- **Enterprise-ish, want Akamai backbone:** Linode.
+
+For most startups self-hosting a 5-app stack (Outline, Plausible, Mattermost, Twenty, n8n), a Hetzner CPX21 (8GB RAM) or a DigitalOcean 4GB Droplet will work. Start with the smaller option if you're unsure; you can resize later.
+
+## What to Avoid
+
+- **Random cheap providers.** Stick to names with track records. Your data and uptime matter.
+- **Oversizing.** Start small. You can always upgrade. A 2GB box can run 2–3 light apps; a 4GB box can run the full stack.
+- **Regions far from users.** Latency matters for chat and docs. Pick a region close to your team.
+
+Once you've chosen a provider, the next guide walks you through [setting up Docker on Ubuntu](/guides/setting-up-docker-on-ubuntu).

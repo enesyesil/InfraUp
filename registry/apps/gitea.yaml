@@ -1,0 +1,66 @@
+slug: gitea
+name: Gitea
+category: GIT_DEVOPS
+description: Git with a cup of tea! Painless self-hosted all-in-one software development service with Git hosting, code review, and CI/CD.
+subdomain: git
+tier: FREE
+dockerImage: gitea/gitea
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/gitea/gitea"
+port: 3000
+minRam: "512MB"
+license: MIT
+deploymentComplexity: SIMPLE
+replaces:
+  - GitHub
+  - GitLab
+tags:
+  - git
+  - version-control
+  - devops
+  - self-hosted
+  - collaboration
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+envs:
+  - key: GITEA__server__ROOT_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: GITEA__database__DB_TYPE
+    value: "postgres"
+  - key: GITEA__database__HOST
+    value: "postgres:5432"
+  - key: GITEA__database__NAME
+    template: "{{ .DBName }}"
+  - key: GITEA__database__USER
+    template: "{{ .DBUser }}"
+  - key: GITEA__database__PASSWD
+    template: "{{ .DBPassword }}"
+  - key: GITEA__security__SECRET_KEY
+    generated: random64
+volumes:
+  - name: data
+    path: /data
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: true
+  hasBackupTool: false
+  hasMultiLanguage: true
+  hasAuditLog: false
+  hasGuestAccess: true
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 7
+meta:
+  website: "https://gitea.io"
+  github: "https://github.com/go-gitea/gitea"
+  docs: "https://docs.gitea.io"
+  logo: "gitea.svg"

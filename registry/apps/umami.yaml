@@ -1,0 +1,60 @@
+slug: umami
+name: "Umami"
+category: ANALYTICS
+description: "Simple, fast, privacy-focused web analytics. Alternative to Google Analytics with minimal footprint."
+subdomain: stats
+tier: FREE
+dockerImage: ghcr.io/umami-software/umami
+dockerRegistry: ghcr
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: ""
+port: 3000
+minRam: "512MB"
+license: MIT
+deploymentComplexity: SIMPLE
+replaces:
+  - Google Analytics
+tags:
+  - analytics
+  - privacy
+  - web-stats
+  - lightweight
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+envs:
+  - key: DATABASE_URL
+    template: "postgres://{{ .DBUser }}:{{ .DBPassword }}@postgres:5432/{{ .DBName }}"
+  - key: DATABASE_TYPE
+    value: "postgresql"
+  - key: APP_SECRET
+    generated: random32
+  - key: HASH_SALT
+    generated: random32
+  - key: TRACKER_SCRIPT_NAME
+    value: "umami"
+volumes:
+  - name: data
+    path: /app/data
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: false
+  hasBackupTool: false
+  hasMultiLanguage: true
+  hasAuditLog: false
+  hasGuestAccess: false
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 7
+meta:
+  website: "https://umami.is"
+  github: "https://github.com/umami-software/umami"
+  docs: "https://umami.is/docs"
+  logo: "umami.svg"

@@ -1,0 +1,71 @@
+slug: erpnext
+name: ERPNext
+category: FINANCE
+description: Full-featured ERP for manufacturing, retail, and services. Self-host alternative to NetSuite and Odoo with API, SSO, audit log, multi-language, and mobile app.
+subdomain: erp
+tier: FREE
+dockerImage: frappe/erpnext
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/frappe/erpnext"
+port: 8080
+minRam: "2GB"
+license: GPL_3
+deploymentComplexity: COMPLEX
+replaces:
+  - NetSuite
+  - Odoo
+tags:
+  - erp
+  - finance
+  - crm
+  - inventory
+  - self-hosted
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+  - id: redis
+    type: CACHE
+    optional: false
+envs:
+  - key: SITE_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: DB_HOST
+    value: "postgres"
+  - key: DB_PORT
+    value: "5432"
+  - key: DB_NAME
+    template: "{{ .DBName }}"
+  - key: DB_USER
+    template: "{{ .DBUser }}"
+  - key: DB_PASSWORD
+    template: "{{ .DBPassword }}"
+  - key: REDIS_CACHE
+    value: "redis://redis:6379"
+  - key: REDIS_QUEUE
+    value: "redis://redis:6379"
+volumes:
+  - name: data
+    path: /home/frappe/frappe-bench/sites
+features:
+  hasApi: true
+  hasMobileApp: true
+  hasSSOSupport: true
+  hasBackupTool: true
+  hasMultiLanguage: true
+  hasAuditLog: true
+  hasGuestAccess: false
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 7
+meta:
+  website: "https://erpnext.com"
+  github: "https://github.com/frappe/erpnext"
+  docs: "https://docs.erpnext.com"
+  logo: "erpnext.svg"

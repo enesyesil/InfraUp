@@ -1,0 +1,55 @@
+slug: jitsi-meet
+name: Jitsi Meet
+category: VIDEO_CONFERENCING
+description: Secure video conferencing platform. Self-host alternative to Zoom and Google Meet with API, mobile app, multi-language, and guest access.
+subdomain: meet
+tier: FREE
+dockerImage: jitsi/web
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/jitsi/web"
+port: 8443
+minRam: "512MB"
+license: APACHE_2
+deploymentComplexity: MODERATE
+replaces:
+  - Zoom
+  - Google Meet
+tags:
+  - video
+  - conferencing
+  - meetings
+  - webrtc
+  - self-hosted
+dependencies: []
+envs:
+  - key: PUBLIC_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: XMPP_DOMAIN
+    template: "{{ .Subdomain }}.{{ .Domain }}"
+  - key: JWT_APP_SECRET
+    generated: random32
+volumes:
+  - name: data
+    path: /config
+features:
+  hasApi: true
+  hasMobileApp: true
+  hasSSOSupport: false
+  hasBackupTool: false
+  hasMultiLanguage: true
+  hasAuditLog: false
+  hasGuestAccess: true
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 7
+meta:
+  website: "https://jitsi.org"
+  github: "https://github.com/jitsi/jitsi-meet"
+  docs: "https://jitsi.github.io/handbook"
+  logo: "jitsi-meet.svg"

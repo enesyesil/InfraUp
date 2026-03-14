@@ -1,0 +1,64 @@
+---
+title: "Getting Started with Self-Hosting"
+description: "Everything you need to know before self-hosting your first app."
+category: "fundamentals"
+order: 1
+---
+
+Self-hosting means running software on infrastructure you control—your own server, your own data, your own responsibility. Instead of paying Notion or Slack to host their app for you, you run an open-source alternative (Outline, Mattermost, etc.) on a virtual private server (VPS) you rent from a provider like Hetzner or DigitalOcean.
+
+This guide covers what you need before you start, and when self-hosting actually makes sense.
+
+## What You Need
+
+**A VPS.** A virtual machine in a data center. Typically $5–20/month for a small instance (2–4GB RAM, 2–4 vCPUs). You get root access, you install what you want.
+
+**A domain.** You'll point `docs.yourcompany.com` or `app.yourcompany.com` at your server. Domains cost ~$10–15/year.
+
+**Basic Linux familiarity.** You don't need to be a sysadmin, but you should be comfortable with SSH, editing files in the terminal, and reading error messages. If `ssh user@server` and `nano file.txt` are foreign, spend an hour on a Linux basics tutorial first.
+
+**Docker.** Most self-hosted apps ship as Docker images. You run `docker compose up` and the app starts. You don't need deep Docker knowledge to begin—just enough to run Compose files and understand that containers are isolated processes.
+
+## When Self-Hosting Makes Sense
+
+- **Cost.** Your SaaS bill is growing with headcount and you want to cap it. A $15/month VPS can run multiple tools that would cost $500+/month as SaaS.
+- **Data ownership.** You need customer data, internal docs, or analytics to stay on your infrastructure for compliance or principle.
+- **Control.** You want to customize, integrate, or extend tools without waiting for a vendor.
+- **You have someone who can maintain it.** Updates, security patches, and occasional debugging. Budget 2–4 hours per month.
+
+## When It Doesn't
+
+- **No one can maintain it.** If your only engineer is 100% on product, self-hosting will become technical debt.
+- **The tool has no good self-hosted alternative.** Figma, Linear, and similar—stay on SaaS.
+- **You're pre-revenue and speed matters more than cost.** Revisit when you have runway.
+
+## Docker Basics
+
+Docker packages an app and its dependencies into a container. You don't install Node, PostgreSQL, or Redis manually—they're inside the container. Docker Compose lets you define multiple containers (app + database + cache) in a single file and start them together.
+
+A minimal example:
+
+```yaml
+services:
+  app:
+    image: outlinewiki/outline:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgres://...
+```
+
+You run `docker compose up -d` and the app listens on port 3000. That's the pattern for most self-hosted apps.
+
+## The Typical Setup
+
+1. **VPS** — Rent a server, SSH in.
+2. **Docker** — Install Docker and Docker Compose.
+3. **Reverse proxy** — Traefik or Caddy sits in front of your apps, handles HTTPS, and routes `docs.example.com` to the right container.
+4. **SSL** — Let's Encrypt gives you free certificates. The reverse proxy handles renewal.
+
+Once that's in place, adding new apps is usually: pull a Docker image, add a Compose service, add a Traefik label. The guides that follow walk you through each step.
+
+## Next Steps
+
+If you're ready to proceed, the next guide covers [choosing a VPS provider](/guides/choosing-a-vps-provider). After that, you'll set up Docker, configure Traefik, and secure everything with SSL.

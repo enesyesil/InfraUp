@@ -1,0 +1,64 @@
+slug: bookstack
+name: "BookStack"
+category: DOCS
+description: "A platform to create documentation and wiki content built with PHP and Laravel. Simple, structured wiki with books, chapters, and pages."
+subdomain: wiki
+tier: FREE
+dockerImage: lscr.io/linuxserver/bookstack
+dockerRegistry: ghcr
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/linuxserver/bookstack"
+port: 8080
+minRam: "512MB"
+license: MIT
+deploymentComplexity: SIMPLE
+replaces:
+  - "Confluence"
+  - "Notion"
+  - "GitBook"
+tags:
+  - "wiki"
+  - "docs"
+  - "documentation"
+  - "knowledge-base"
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+envs:
+  - key: APP_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: APP_KEY
+    generated: random64
+  - key: DB_HOST
+    value: "postgres"
+  - key: DB_DATABASE
+    template: "{{ .DBName }}"
+  - key: DB_USERNAME
+    template: "{{ .DBUser }}"
+  - key: DB_PASSWORD
+    template: "{{ .DBPassword }}"
+volumes:
+  - name: data
+    path: /config
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: true
+  hasBackupTool: false
+  hasMultiLanguage: true
+  hasAuditLog: false
+  hasGuestAccess: true
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 7
+meta:
+  website: "https://www.bookstackapp.com"
+  github: "https://github.com/BookStackApp/BookStack"
+  docs: "https://www.bookstackapp.com/docs"
+  logo: "bookstack.svg"

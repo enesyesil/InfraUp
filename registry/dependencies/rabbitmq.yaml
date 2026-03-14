@@ -1,0 +1,16 @@
+id: rabbitmq
+name: "RabbitMQ"
+type: BROKER
+image: rabbitmq:3.13-management-alpine
+port: 5672
+envs:
+  - key: RABBITMQ_DEFAULT_USER
+    value: "app"
+  - key: RABBITMQ_DEFAULT_PASS
+    generated: random32
+volumes:
+  - name: rabbitmqdata
+    path: /var/lib/rabbitmq
+resources:
+  memory: 256Mi
+  cpu: 100m

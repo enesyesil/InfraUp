@@ -1,0 +1,58 @@
+slug: cal-com
+name: Cal.com
+category: SCHEDULING
+description: Open-source scheduling infrastructure. Self-host alternative to Calendly and SavvyCal with API, SSO, and multi-language support.
+subdomain: cal
+tier: FREE
+dockerImage: calcom/cal.com
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/calcom/cal.com"
+port: 3000
+minRam: "512MB"
+license: AGPL_3
+deploymentComplexity: MODERATE
+replaces:
+  - Calendly
+  - SavvyCal
+tags:
+  - scheduling
+  - calendar
+  - meetings
+  - booking
+  - self-hosted
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+envs:
+  - key: NEXTAUTH_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: DATABASE_URL
+    template: "postgresql://{{ .DBUser }}:{{ .DBPassword }}@postgres:5432/{{ .DBName }}"
+  - key: NEXTAUTH_SECRET
+    generated: random32
+volumes:
+  - name: data
+    path: /app/data
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: true
+  hasBackupTool: false
+  hasMultiLanguage: true
+  hasAuditLog: false
+  hasGuestAccess: true
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: true
+businessRelevance: 8
+meta:
+  website: "https://cal.com"
+  github: "https://github.com/calcom/cal.com"
+  docs: "https://cal.com/docs"
+  logo: "cal-com.svg"

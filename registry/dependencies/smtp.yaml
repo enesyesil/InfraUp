@@ -1,0 +1,10 @@
+id: smtp
+name: "MailHog"
+type: SMTP
+image: mailhog/mailhog:latest
+port: 1025
+envs: []
+volumes: []
+resources:
+  memory: 64Mi
+  cpu: 50m

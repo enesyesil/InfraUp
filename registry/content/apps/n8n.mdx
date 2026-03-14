@@ -1,0 +1,32 @@
+---
+slug: n8n
+lastReviewed: 2026-03-01
+---
+
+## What It Actually Is
+
+n8n is a workflow automation platform—Zapier or Make, but self-hosted. You build workflows with a visual node-based editor: trigger (webhook, schedule, etc.) → steps (HTTP, database, email, etc.) → output. It connects to hundreds of services via built-in nodes and supports custom code when needed.
+
+## Who It's For
+
+Teams that want to automate workflows without sending data to Zapier or Make. DevOps, ops, and technical users who can wire up APIs. Companies that need to keep automation logic in-house for compliance or cost. Anyone who's hit Zapier's execution limits or pricing and wants an alternative.
+
+## Key Features
+
+The editor is node-based: drag, connect, configure. Triggers include webhooks, cron, manual, and app-specific events. Nodes cover HTTP, databases, email, Slack, Google, AWS, and hundreds more. You can embed JavaScript for custom logic. Workflows can be exported as JSON and version-controlled. The community is active and the node library grows steadily.
+
+## Honest Tradeoffs
+
+There's a learning curve for non-technical users—understanding nodes, credentials, and error handling takes time. Some nodes require a paid n8n license (enterprise connectors). The self-hosted version doesn't have all the cloud features. Debugging failed workflows can be tedious when you're deep in a chain of nodes.
+
+## Setup Gotchas
+
+Credentials are stored in the database; secure your instance and use strong encryption for the database. Webhook-based triggers need a public URL or tunnel for external services to reach you. Some nodes need OAuth—you'll configure apps in Google, Slack, etc. Execution timeouts vary; long-running workflows may need to be split.
+
+## Compared To Alternatives
+
+**Activepieces** is simpler, fully open source (MIT), and has a lighter UI—fewer nodes but easier to grasp. **Zapier/Make** are hosted and have more pre-built integrations but lock you in and cost more at scale. n8n wins on self-hosting, flexibility, and node count; Activepieces wins on simplicity and license purity.
+
+## Real World Fit
+
+n8n fits technical teams that need powerful workflow automation and can invest in learning the tool. Ideal for 5–50 person orgs with someone who can own the automation layer. Not the best first choice for non-technical users—Activepieces or even Zapier might be kinder. Power users will appreciate the depth.

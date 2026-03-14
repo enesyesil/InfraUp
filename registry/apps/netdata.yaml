@@ -1,0 +1,52 @@
+slug: netdata
+name: Netdata
+category: MONITORING
+description: Real-time performance monitoring for systems and applications. Zero-config, per-second metrics, and instant troubleshooting.
+subdomain: netdata
+tier: FREE
+dockerImage: netdata/netdata
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/netdata/netdata"
+port: 19999
+minRam: "512MB"
+license: GPL_3
+deploymentComplexity: SIMPLE
+replaces:
+  - Datadog
+tags:
+  - monitoring
+  - metrics
+  - real-time
+  - performance
+  - observability
+dependencies: []
+envs:
+  - key: NETDATA_CLAIM_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+volumes:
+  - name: config
+    path: /etc/netdata
+  - name: data
+    path: /var/lib/netdata
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: false
+  hasBackupTool: false
+  hasMultiLanguage: false
+  hasAuditLog: false
+  hasGuestAccess: true
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 6
+meta:
+  website: "https://www.netdata.cloud"
+  github: "https://github.com/netdata/netdata"
+  docs: "https://learn.netdata.cloud"
+  logo: "netdata.svg"

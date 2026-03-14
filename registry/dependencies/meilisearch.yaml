@@ -1,0 +1,16 @@
+id: meilisearch
+name: "Meilisearch"
+type: SEARCH
+image: getmeili/meilisearch:v1.6
+port: 7700
+envs:
+  - key: MEILI_MASTER_KEY
+    generated: random32
+  - key: MEILI_ENV
+    value: "production"
+volumes:
+  - name: msdata
+    path: /meili_data
+resources:
+  memory: 256Mi
+  cpu: 100m

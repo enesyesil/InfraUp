@@ -1,0 +1,72 @@
+slug: chatwoot
+name: "Chatwoot"
+category: SUPPORT
+description: "Open-source live-chat, email support, and omni-channel customer engagement platform. Alternative to Intercom and Zendesk."
+subdomain: support
+tier: FREE
+dockerImage: chatwoot/chatwoot
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/chatwoot/chatwoot"
+port: 3000
+minRam: "512MB"
+license: MIT
+deploymentComplexity: MODERATE
+replaces:
+  - Intercom
+  - Zendesk
+tags:
+  - support
+  - live-chat
+  - customer-engagement
+  - omni-channel
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+  - id: redis
+    type: CACHE
+    optional: false
+envs:
+  - key: NODE_ENV
+    value: "production"
+  - key: RAILS_ENV
+    value: "production"
+  - key: FRONTEND_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: SECRET_KEY_BASE
+    generated: random64
+  - key: POSTGRES_DATABASE
+    template: "{{ .DBName }}"
+  - key: POSTGRES_USERNAME
+    template: "{{ .DBUser }}"
+  - key: POSTGRES_PASSWORD
+    template: "{{ .DBPassword }}"
+  - key: POSTGRES_HOST
+    value: "postgres"
+  - key: REDIS_URL
+    value: "redis://redis:6379"
+volumes:
+  - name: storage
+    path: /app/storage
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: true
+  hasBackupTool: false
+  hasMultiLanguage: true
+  hasAuditLog: false
+  hasGuestAccess: false
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: true
+businessRelevance: 8
+meta:
+  website: "https://www.chatwoot.com"
+  github: "https://github.com/chatwoot/chatwoot"
+  docs: "https://www.chatwoot.com/docs"
+  logo: "chatwoot.svg"

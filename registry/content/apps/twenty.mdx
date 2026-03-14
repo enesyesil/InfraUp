@@ -1,0 +1,32 @@
+---
+slug: twenty
+lastReviewed: 2026-03-01
+---
+
+## What It Actually Is
+
+Twenty is a modern CRM built with a clean, opinionated stack—TypeScript, React, and a GraphQL API. It positions itself as a Salesforce or HubSpot alternative that you can self-host. The UI is polished, the data model is flexible (custom objects, fields, and views), and it feels like a product from 2024 rather than 2010.
+
+## Who It's For
+
+Startups and SMBs that want a proper CRM without the enterprise pricing or vendor lock-in. Sales teams tired of clunky interfaces, and companies that need to own their customer data. If you've looked at HubSpot and thought "we just need the CRM part," Twenty is aimed at you.
+
+## Key Features
+
+You get companies, people, opportunities, activities, and custom objects—the usual CRM building blocks. The interface supports multiple views (list, kanban, etc.), filtering, and sorting. There's an API for integrations, and the codebase is open source so you can extend it. The design is minimal and fast, with keyboard shortcuts and a focus on reducing clicks.
+
+## Honest Tradeoffs
+
+Twenty is a younger project. The ecosystem of integrations (email sync, calendar, enrichment tools) is thinner than HubSpot or Salesforce. Some workflows that are one-click in commercial CRMs require custom setup or API work here. The project is actively developed, so expect occasional breaking changes and features that land incrementally.
+
+## Setup Gotchas
+
+Deployment is straightforward with Docker, but make sure you allocate enough memory—the app can be hungry under load. Database migrations run on startup; give it time on first boot. If you're syncing with external tools, plan for custom integration work since pre-built connectors are limited.
+
+## Compared To Alternatives
+
+**EspoCRM** is more mature, with a larger plugin ecosystem and years of production use. **SuiteCRM** is the enterprise fork of SugarCRM—heavier, more features, steeper learning curve. Twenty wins on UX and modern stack; the others win on maturity and integrations.
+
+## Real World Fit
+
+Twenty fits teams that prioritize a great UX and self-hosting over a mature integration ecosystem. It's ideal for 5–50 person sales orgs that can live with fewer third-party connectors and are comfortable with a product that's still evolving. Not the best pick if you need deep HubSpot/Salesforce parity out of the box.

@@ -1,0 +1,62 @@
+slug: espocrm
+name: "EspoCRM"
+category: CRM
+description: "EspoCRM – Open Source CRM Application. Flexible and extensible CRM for sales, marketing, and customer support."
+subdomain: crm-espo
+tier: FREE
+dockerImage: espocrm/espocrm
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/espocrm/espocrm"
+port: 8080
+minRam: "512MB"
+license: GPL_3
+deploymentComplexity: MODERATE
+replaces:
+  - "HubSpot"
+  - "Pipedrive"
+  - "Salesforce"
+tags:
+  - "crm"
+  - "sales"
+  - "contacts"
+  - "marketing"
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+envs:
+  - key: ESPOCRM_SITE_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: ESPOCRM_DATABASE_HOST
+    value: "postgres"
+  - key: ESPOCRM_DATABASE_NAME
+    template: "{{ .DBName }}"
+  - key: ESPOCRM_DATABASE_USER
+    template: "{{ .DBUser }}"
+  - key: ESPOCRM_DATABASE_PASSWORD
+    template: "{{ .DBPassword }}"
+volumes:
+  - name: data
+    path: /var/www/html/data
+features:
+  hasApi: true
+  hasMobileApp: true
+  hasSSOSupport: true
+  hasBackupTool: true
+  hasMultiLanguage: true
+  hasAuditLog: true
+  hasGuestAccess: false
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 6
+meta:
+  website: "https://www.espocrm.com"
+  github: "https://github.com/espocrm/espocrm"
+  docs: "https://docs.espocrm.com"
+  logo: "espocrm.svg"

@@ -1,0 +1,55 @@
+slug: vaultwarden
+name: Vaultwarden
+category: PASSWORD_MANAGER
+description: Lightweight Bitwarden-compatible password manager server. Self-host alternative to Bitwarden and 1Password with API, mobile app, SSO, and offline mode.
+subdomain: vault
+tier: FREE
+dockerImage: vaultwarden/server
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/vaultwarden/server"
+port: 80
+minRam: "512MB"
+license: AGPL_3
+deploymentComplexity: SIMPLE
+replaces:
+  - Bitwarden
+  - 1Password
+tags:
+  - passwords
+  - security
+  - vault
+  - encryption
+  - self-hosted
+dependencies: []
+envs:
+  - key: DOMAIN
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: SIGNUPS_ALLOWED
+    value: "true"
+  - key: ADMIN_TOKEN
+    generated: random32
+volumes:
+  - name: data
+    path: /data
+features:
+  hasApi: true
+  hasMobileApp: true
+  hasSSOSupport: true
+  hasBackupTool: false
+  hasMultiLanguage: false
+  hasAuditLog: false
+  hasGuestAccess: false
+  hasOfflineMode: true
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 8
+meta:
+  website: "https://vaultwarden.dev"
+  github: "https://github.com/dani-garcia/vaultwarden"
+  docs: "https://github.com/dani-garcia/vaultwarden/wiki"
+  logo: "vaultwarden.svg"

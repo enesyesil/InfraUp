@@ -1,0 +1,18 @@
+id: elasticsearch
+name: "Elasticsearch"
+type: SEARCH
+image: elasticsearch:8.12.0
+port: 9200
+envs:
+  - key: discovery.type
+    value: "single-node"
+  - key: ES_JAVA_OPTS
+    value: "-Xms256m -Xmx256m"
+  - key: xpack.security.enabled
+    value: "false"
+volumes:
+  - name: esdata
+    path: /usr/share/elasticsearch/data
+resources:
+  memory: 512Mi
+  cpu: 250m

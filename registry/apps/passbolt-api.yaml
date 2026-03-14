@@ -1,0 +1,60 @@
+slug: passbolt-api
+name: Passbolt
+category: PASSWORD_MANAGER
+description: Open-source password manager for teams. Self-host alternative to 1Password and LastPass with API, SSO, audit log, and multi-language support.
+subdomain: passwords
+tier: FREE
+dockerImage: passbolt/passbolt
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/passbolt/passbolt"
+port: 443
+minRam: "512MB"
+license: AGPL_3
+deploymentComplexity: MODERATE
+replaces:
+  - 1Password
+  - LastPass
+tags:
+  - passwords
+  - security
+  - team
+  - sharing
+  - self-hosted
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+envs:
+  - key: PASSBOLT_BASE_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: DATABASE_URL
+    template: "postgresql://{{ .DBUser }}:{{ .DBPassword }}@postgres:5432/{{ .DBName }}"
+  - key: PASSBOLT_GPG_SERVER_KEY_PUBLIC
+    generated: random64
+  - key: PASSBOLT_GPG_SERVER_KEY_PRIVATE
+    generated: random64
+volumes:
+  - name: data
+    path: /var/www/passbolt
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: true
+  hasBackupTool: false
+  hasMultiLanguage: true
+  hasAuditLog: true
+  hasGuestAccess: false
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 6
+meta:
+  website: "https://www.passbolt.com"
+  github: "https://github.com/passbolt/passbolt_api"
+  docs: "https://help.passbolt.com"
+  logo: "passbolt-api.svg"

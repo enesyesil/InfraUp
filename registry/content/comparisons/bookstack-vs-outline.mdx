@@ -1,0 +1,21 @@
+---
+appA: bookstack
+appB: outline
+lastReviewed: 2026-03-01
+---
+
+## The Verdict
+
+Choose **Outline** if you want a modern, Notion-like editor with real-time collaboration and a Slack-era feel. Choose **BookStack** if you want simpler self-hosting, a clear book/chapter/page structure, and lower resource usage. Both are solid; the decision is about UX philosophy and ops complexity.
+
+## Where BookStack Wins
+
+BookStack is easier to run: a single PHP app with MySQL/MariaDB, no Redis, no Node. The book/chapter/page hierarchy is explicit—ideal for structured documentation like manuals, runbooks, and formal knowledge bases. It uses less RAM and has a smaller attack surface. Setup is straightforward; you can have it running in minutes. If you value simplicity and predictable structure, BookStack delivers.
+
+## Where Outline Wins
+
+Outline has the better editor: rich formatting, slash commands, collaborative cursors, and a polished writing experience. Real-time collaboration means multiple people can edit the same doc at once. The flexible collection model suits teams that think in documents rather than hierarchies. It feels modern—closer to Notion or Confluence than to traditional wikis. If your team prioritizes writing UX and collaboration, Outline is the stronger choice.
+
+## Bottom Line
+
+Outline for modern teams that want a beautiful, collaborative docs experience and can handle Postgres + Redis. BookStack for teams that want structured documentation with minimal ops overhead. Neither is wrong—pick based on your team's workflow and how much infrastructure you're willing to run.

@@ -1,0 +1,32 @@
+---
+slug: plane
+lastReviewed: 2026-03-01
+---
+
+## What It Actually Is
+
+Plane is a project management tool that replaces Jira or Linear—issues, cycles (sprints), modules, views, and a clean UI. It's built for software teams: backlog, sprint planning, kanban, list views, and labels. The design is modern, the UX is fast, and it feels like a product from the Linear era rather than the Jira era.
+
+## Who It's For
+
+Engineering teams that want Jira/Linear functionality without the bloat or the SaaS bill. Startups and SMBs that need proper issue tracking, sprint planning, and project views. Teams that have outgrown Trello and want something more structured.
+
+## Key Features
+
+You get issues with status, priority, labels, assignees, and estimates. Cycles work like sprints. Modules let you group issues by feature or epic. Views include list, kanban, calendar, and gantt. There's a roadmap view, time tracking, and integrations (GitHub, GitLab). The API supports custom tooling. The UI is responsive and keyboard-friendly.
+
+## Honest Tradeoffs
+
+Plane is rapidly evolving—breaking changes and UI overhauls happen. The integration ecosystem is thinner than Jira's. Some features (e.g., advanced reporting) are still maturing. If you need rock-solid stability and a frozen feature set, this might feel too active. The project is young; expect some rough edges.
+
+## Setup Gotchas
+
+Deployment requires Postgres and Redis. Follow the official setup; the architecture has multiple services. OAuth for GitHub/GitLab needs to be configured in both Plane and the Git provider. Database migrations run on startup—first boot can take a minute. Backup your data before major upgrades.
+
+## Compared To Alternatives
+
+**OpenProject** is more mature, heavier, and has a stronger focus on traditional project management (Gantt, etc.). **Jira** has the ecosystem and enterprise features but is complex and expensive. Plane wins on modern UX and simplicity; OpenProject wins on maturity and enterprise PM features.
+
+## Real World Fit
+
+Plane fits engineering teams that want a modern, fast project management tool and can tolerate some evolution. Best for 5–50 person dev teams that value UX over stability. Not ideal if you need deep Jira integrations or a fully frozen product—Plane is still finding its shape.

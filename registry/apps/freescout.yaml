@@ -1,0 +1,67 @@
+slug: freescout
+name: "FreeScout"
+category: SUPPORT
+description: "Open-source helpdesk and shared inbox. Self-hosted alternative to HelpScout and Zendesk."
+subdomain: helpdesk
+tier: FREE
+dockerImage: tiredofit/freescout
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: false
+dockerHubUrl: "https://hub.docker.com/r/tiredofit/freescout"
+port: 80
+minRam: "512MB"
+license: AGPL_3
+deploymentComplexity: SIMPLE
+replaces:
+  - HelpScout
+  - Zendesk
+tags:
+  - helpdesk
+  - support
+  - shared-inbox
+  - email
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+envs:
+  - key: APP_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: APP_KEY
+    generated: random32
+  - key: DB_CONNECTION
+    value: "pgsql"
+  - key: DB_HOST
+    value: "postgres"
+  - key: DB_PORT
+    value: "5432"
+  - key: DB_DATABASE
+    template: "{{ .DBName }}"
+  - key: DB_USERNAME
+    template: "{{ .DBUser }}"
+  - key: DB_PASSWORD
+    template: "{{ .DBPassword }}"
+volumes:
+  - name: data
+    path: /data
+features:
+  hasApi: false
+  hasMobileApp: false
+  hasSSOSupport: false
+  hasBackupTool: false
+  hasMultiLanguage: false
+  hasAuditLog: false
+  hasGuestAccess: false
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 6
+meta:
+  website: "https://freescout.net"
+  github: "https://github.com/freescout-helpdesk/freescout"
+  docs: "https://github.com/freescout-helpdesk/freescout/wiki"
+  logo: "freescout.svg"

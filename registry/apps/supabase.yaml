@@ -1,0 +1,62 @@
+slug: supabase
+name: Supabase
+category: AUTH
+description: The Postgres development platform. Supabase gives you a dedicated Postgres database to build your web, mobile, and AI applications.
+subdomain: supabase
+tier: FREE
+dockerImage: supabase/supabase
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/supabase/supabase"
+port: 8000
+minRam: "1GB"
+license: APACHE_2
+deploymentComplexity: COMPLEX
+replaces:
+  - Firebase
+  - Auth0
+tags:
+  - auth
+  - database
+  - backend
+  - postgres
+  - realtime
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+envs:
+  - key: SITE_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: ANON_KEY
+    generated: random64
+  - key: SERVICE_ROLE_KEY
+    generated: random64
+  - key: DATABASE_URL
+    template: "postgresql://{{ .DBUser }}:{{ .DBPassword }}@postgres:5432/{{ .DBName }}"
+  - key: POSTGRES_PASSWORD
+    template: "{{ .DBPassword }}"
+volumes:
+  - name: data
+    path: /var/lib/postgresql/data
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: true
+  hasBackupTool: false
+  hasMultiLanguage: false
+  hasAuditLog: false
+  hasGuestAccess: false
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 8
+meta:
+  website: "https://supabase.com"
+  github: "https://github.com/supabase/supabase"
+  docs: "https://supabase.com/docs"
+  logo: "supabase.svg"

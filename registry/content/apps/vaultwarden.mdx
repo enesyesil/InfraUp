@@ -1,0 +1,32 @@
+---
+slug: vaultwarden
+lastReviewed: 2026-03-01
+---
+
+## What It Actually Is
+
+Vaultwarden is a lightweight, Bitwarden-compatible password manager server. It implements the Bitwarden API, so you can use the official Bitwarden clients (browser extension, mobile app, desktop) and point them at your own server. All your passwords stay on your infrastructure. It's a community project, not official Bitwarden.
+
+## Who It's For
+
+Individuals and teams that want a self-hosted password manager with full Bitwarden client compatibility. Anyone who trusts Bitwarden's UX but wants to own the server. Privacy-conscious users and orgs that can't use cloud password managers.
+
+## Key Features
+
+You get the full Bitwarden feature set from the client side: vaults, folders, collections, sharing, TOTP (authenticator codes), and secure notes. The server is a single Rust binary—tiny footprint, fast. It uses SQLite by default (or MySQL/Postgres). The admin panel lets you manage users, invites, and org settings. No official Bitwarden server required.
+
+## Honest Tradeoffs
+
+Vaultwarden is not official Bitwarden—it's a community fork. Historically it had a single main maintainer, though the project has grown. Some edge cases or new Bitwarden API features may lag. You're trusting a third-party implementation of the Bitwarden protocol. For most users it's rock-solid; purists may prefer the official server (heavier) or a different stack.
+
+## Setup Gotchas
+
+HTTPS is required for the browser extension—it won't work over plain HTTP due to secure context requirements. The admin panel is disabled by default; you enable it with `ADMIN_TOKEN` and access it at `/admin`. Generate a strong token. Back up your SQLite database regularly; that's your entire vault. First-time setup: create an account, verify email if you've enabled it, then connect clients.
+
+## Compared To Alternatives
+
+**Bitwarden (official server)** is heavier (C#, more resources) but officially supported. **Passbolt** is a different product with different clients. **Keepass** is file-based, no server. Vaultwarden wins on lightness and Bitwarden client compatibility; the official server wins on official support and guaranteed API parity.
+
+## Real World Fit
+
+Vaultwarden fits individuals and small teams that want Bitwarden's UX with a self-hosted backend. Ideal for 1–50 users, homelabs, and privacy-focused orgs. The single-binary, SQLite default makes it easy to run. Not the right choice if you need official Bitwarden support or enterprise SLAs—use the official server for that.

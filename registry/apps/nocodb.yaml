@@ -1,0 +1,57 @@
+slug: nocodb
+name: NocoDB
+category: FORMS
+description: Turns any database into a smart spreadsheet. Airtable alternative with REST and GraphQL APIs, views, and automation.
+subdomain: tables
+tier: FREE
+dockerImage: nocodb/nocodb
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/nocodb/nocodb"
+port: 8080
+minRam: "512MB"
+license: AGPL_3
+deploymentComplexity: SIMPLE
+replaces:
+  - Airtable
+tags:
+  - database
+  - spreadsheet
+  - airtable
+  - no-code
+  - api
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+envs:
+  - key: NC_PUBLIC_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: NC_AUTH_JWT_SECRET
+    generated: random64
+  - key: NC_DB
+    template: "pg://postgres:5432?u={{ .DBUser }}&p={{ .DBPassword }}&d={{ .DBName }}"
+volumes:
+  - name: data
+    path: /usr/app/data
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: true
+  hasBackupTool: false
+  hasMultiLanguage: true
+  hasAuditLog: false
+  hasGuestAccess: true
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 7
+meta:
+  website: "https://nocodb.com"
+  github: "https://github.com/nocodb/nocodb"
+  docs: "https://docs.nocodb.com"
+  logo: "nocodb.svg"

@@ -1,0 +1,161 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Enums ───────────────────────────────────────────────
+
+enum AppTier {
+  FREE
+  PAID
+}
+
+enum AppCategory {
+  DOCS
+  CRM
+  MESSAGING
+  SUPPORT
+  ANALYTICS
+  EMAIL_MARKETING
+  PROJECT_MANAGEMENT
+  AUTH
+  STORAGE
+  STATUS
+  MONITORING
+  GIT_DEVOPS
+  AUTOMATION
+  FORMS
+  SCHEDULING
+  PASSWORD_MANAGER
+  FINANCE
+  CMS
+  VIDEO_CONFERENCING
+  HR
+  INTERNAL_TOOLS
+}
+
+enum DependencyType {
+  DATABASE
+  CACHE
+  SMTP
+  OBJECT_STORAGE
+  SEARCH
+  BROKER
+}
+
+enum LicenseType {
+  MIT
+  APACHE_2
+  GPL_3
+  AGPL_3
+  BSD_3
+  BSL
+  PROPRIETARY
+  OTHER
+}
+
+enum DeploymentComplexity {
+  SIMPLE
+  MODERATE
+  COMPLEX
+}
+
+// ─── Phase 1 active tables ───────────────────────────────
+
+model App {
+  id                    String               @id @default(uuid())
+  slug                  String               @unique
+  name                  String
+  category              AppCategory
+  description           String
+  subdomain             String
+  tier                  AppTier              @default(FREE)
+
+  // Docker
+  dockerImage           String
+  dockerHubUrl          String?
+  dockerSupported       Boolean              @default(true)
+  officialDockerImage   Boolean              @default(false)
+
+  // Links
+  websiteUrl            String?
+  githubUrl             String?
+  docsUrl               String?
+  logoUrl               String?
+
+  // Technical
+  port                  Int
+  minRam                String               @default("512MB")
+  license               LicenseType?
+  deploymentComplexity  DeploymentComplexity @default(MODERATE)
+  replaces              String[]
+  tags                  String[]
+
+  // GitHub stats (managed by sync CLI)
+  githubStars           Int?
+  lastCommitAt          DateTime?
+  lastReleaseAt         DateTime?
+  activelyMaintained    Boolean              @default(true)
+
+  // Feature matrix
+  hasApi                Boolean              @default(false)
+  hasMobileApp          Boolean              @default(false)
+  hasSSOSupport         Boolean              @default(false)
+  hasBackupTool         Boolean              @default(false)
+  hasMultiLanguage      Boolean              @default(false)
+  hasAuditLog           Boolean              @default(false)
+  hasGuestAccess        Boolean              @default(false)
+  hasOfflineMode        Boolean              @default(false)
+
+  // Affiliate
+  hasAffiliate          Boolean              @default(false)
+  affiliateUrl          String?
+  affiliateSignupUrl    String?
+
+  // Curation
+  featured              Boolean              @default(false)
+  businessRelevance     Int                  @default(5)
+  isActive              Boolean              @default(true)
+
+  // Verification timestamps
+  dockerVerifiedAt      DateTime?
+  maintenanceVerifiedAt DateTime?
+  affiliateVerifiedAt   DateTime?
+  metaVerifiedAt        DateTime?
+
+  createdAt             DateTime             @default(now())
+  updatedAt             DateTime             @updatedAt
+
+  dependencies          AppDependency[]
+}
+
+model AppDependency {
+  id             String         @id @default(uuid())
+  appId          String
+  dependencySlug String
+  type           DependencyType
+  optional       Boolean        @default(false)
+  app            App            @relation(fields: [appId], references: [id])
+}
+
+model Waitlist {
+  id             String   @id @default(uuid())
+  email          String   @unique
+  role           String?
+  replacingTools String[]
+  createdAt      DateTime @default(now())
+}
+
+// ─── Phase 2 tables — uncomment when starting Phase 2 ────
+// model User { ... }
+// model Account { ... }
+// model Session { ... }
+// model VerificationToken { ... }
+// model Project { ... }
+// model Payment { ... }
+// model Generation { ... }
+// model GenerationApp { ... }

@@ -1,0 +1,53 @@
+slug: signoz
+name: SigNoz
+category: MONITORING
+description: Open-source observability platform. Traces, metrics, and logs in a single pane. APM, distributed tracing, and alerting.
+subdomain: signoz
+tier: FREE
+dockerImage: signoz/signoz
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: true
+dockerHubUrl: "https://hub.docker.com/r/signoz/signoz"
+port: 3301
+minRam: "2GB"
+license: MIT
+deploymentComplexity: COMPLEX
+replaces:
+  - Datadog
+  - NewRelic
+tags:
+  - monitoring
+  - observability
+  - apm
+  - tracing
+  - logs
+dependencies: []
+envs:
+  - key: SIGNOZ_LOCAL_DOMAIN
+    template: "{{ .Subdomain }}.{{ .Domain }}"
+  - key: SIGNOZ_LICENSE_KEY
+    value: ""
+volumes:
+  - name: data
+    path: /var/lib/signoz
+features:
+  hasApi: true
+  hasMobileApp: false
+  hasSSOSupport: true
+  hasBackupTool: false
+  hasMultiLanguage: false
+  hasAuditLog: true
+  hasGuestAccess: false
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 7
+meta:
+  website: "https://signoz.io"
+  github: "https://github.com/SigNoz/signoz"
+  docs: "https://signoz.io/docs"
+  logo: "signoz.svg"

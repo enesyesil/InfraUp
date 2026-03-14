@@ -1,0 +1,62 @@
+slug: suitecrm
+name: "SuiteCRM"
+category: CRM
+description: "SuiteCRM - Open source CRM for the world. Enterprise-grade CRM with sales, marketing, and support modules."
+subdomain: suitecrm
+tier: FREE
+dockerImage: bitnami/suitecrm
+dockerRegistry: dockerhub
+dockerPreferredTag: latest
+officialDockerImage: false
+dockerHubUrl: "https://hub.docker.com/r/bitnami/suitecrm"
+port: 8080
+minRam: "512MB"
+license: AGPL_3
+deploymentComplexity: MODERATE
+replaces:
+  - "Salesforce"
+  - "HubSpot"
+  - "SugarCRM"
+tags:
+  - "crm"
+  - "sales"
+  - "enterprise"
+  - "sugar"
+dependencies:
+  - id: postgres
+    type: DATABASE
+    optional: false
+envs:
+  - key: SUITECRM_SITE_URL
+    template: "https://{{ .Subdomain }}.{{ .Domain }}"
+  - key: SUITECRM_DATABASE_HOST
+    value: "postgres"
+  - key: SUITECRM_DATABASE_NAME
+    template: "{{ .DBName }}"
+  - key: SUITECRM_DATABASE_USER
+    template: "{{ .DBUser }}"
+  - key: SUITECRM_DATABASE_PASSWORD
+    template: "{{ .DBPassword }}"
+volumes:
+  - name: data
+    path: /bitnami/suitecrm
+features:
+  hasApi: true
+  hasMobileApp: true
+  hasSSOSupport: true
+  hasBackupTool: true
+  hasMultiLanguage: true
+  hasAuditLog: true
+  hasGuestAccess: false
+  hasOfflineMode: false
+affiliate:
+  hasAffiliate: false
+  affiliateUrl: ""
+  affiliateSignupUrl: ""
+featured: false
+businessRelevance: 5
+meta:
+  website: "https://suitecrm.com"
+  github: "https://github.com/SuiteCRM/SuiteCRM"
+  docs: "https://docs.suitecrm.com"
+  logo: "suitecrm.svg"

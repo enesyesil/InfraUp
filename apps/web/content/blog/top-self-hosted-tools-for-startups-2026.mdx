@@ -1,0 +1,85 @@
+---
+title: "The Essential Self-Hosted Stack for Startups in 2026"
+date: "2026-03-01"
+author: "InfraUp Team"
+excerpt: "Our recommended 5-tool self-hosted stack that covers docs, analytics, chat, CRM, and automation for under $10/month."
+tags: ["guide", "startups", "recommendations"]
+---
+
+You don't need to self-host everything. But if you pick the right five tools, you can cover docs, analytics, chat, CRM, and automation on a single VPS for under $10/month. Here's the stack we recommend and why.
+
+## 1. Outline — Docs & Wiki
+
+**Replaces:** Notion, Confluence
+
+Outline gives you nested pages, Markdown, real-time collaboration, and Slack integration. It's the closest thing to Notion you can self-host. A 10-person team can run it comfortably.
+
+**Resources:** ~1GB RAM, PostgreSQL, Redis. Plan for 1–2GB on the VPS.
+
+**Why this over BookStack or Wiki.js:** Better UX for product-focused teams. Feels modern. BookStack is lighter but more "manual" than "wiki." Wiki.js is great if you want Git sync; Outline is better if you want Notion-like workflows.
+
+## 2. Plausible — Analytics
+
+**Replaces:** Google Analytics, Mixpanel (for simple page views)
+
+Plausible is privacy-focused, lightweight, and gives you the metrics that matter: page views, referrers, countries, devices. No cookies, no consent banners, no bloat.
+
+**Resources:** ~256MB. Runs on PostgreSQL. Very light.
+
+**Why this over Matomo or Umami:** Matomo is powerful but heavy. Umami is lighter than Matomo but Plausible has better UX and a clearer privacy story. For most startups, Plausible is the sweet spot.
+
+## 3. Mattermost — Chat
+
+**Replaces:** Slack (for internal comms)
+
+Mattermost is the most Slack-like self-hosted option. Channels, threads, DMs, file sharing, integrations. If your team lives in Slack, Mattermost will feel familiar.
+
+**Resources:** ~1–2GB RAM. PostgreSQL. Heavier than the others but still manageable.
+
+**Why this over Rocket.Chat or Matrix:** Rocket.Chat is feature-rich but can be finicky. Matrix is decentralized and powerful but has a steeper setup curve. Mattermost is the most "drop-in Slack replacement" of the three.
+
+## 4. Twenty — CRM
+
+**Replaces:** HubSpot, Salesforce (for early-stage)
+
+Twenty is an open-source CRM built by a team that previously worked on CRM products. Companies, contacts, opportunities, activities. Clean UI, active development.
+
+**Resources:** ~512MB–1GB. PostgreSQL. Still maturing but production-usable.
+
+**Why this over SuiteCRM or EspoCRM:** SuiteCRM and EspoCRM are battle-tested but feel dated. Twenty is modern, React-based, and designed for teams that don't want 1990s enterprise software.
+
+## 5. n8n — Automation
+
+**Replaces:** Zapier, Make
+
+n8n is a workflow automation tool—connect apps, trigger actions, move data. Self-hosted means no per-workflow limits and no data leaving your infrastructure.
+
+**Resources:** ~512MB–1GB. Can spike during heavy workflows.
+
+**Why this over Node-RED or Huginn:** Node-RED is great for IoT and low-level automation but less polished for business workflows. Huginn is newer. n8n has the best balance of power, UX, and ecosystem.
+
+## Total Cost
+
+| Component | Monthly cost |
+|-----------|--------------|
+| Hetzner CPX21 (4 vCPU, 8GB RAM) | ~$13 |
+| Domain (annualized) | ~$1 |
+| **Total** | **~$14** |
+
+All five apps fit on that single VPS with headroom. If you go with a smaller box (e.g., 4GB RAM), you might need to drop Mattermost or run a second small instance—Mattermost is the heaviest of the five.
+
+## Deployment Order
+
+1. **Outline** — Get your docs migrated first. Highest immediate value.
+2. **Plausible** — Lightweight, easy to add. Point your site at it.
+3. **n8n** — Start automating internal workflows. Sync data, send notifications.
+4. **Twenty** — Once you have leads and customers to track.
+5. **Mattermost** — Add when you're ready to move off Slack (or use it for a specific team/project).
+
+## What We're Not Including
+
+- **Linear/Jira:** No good self-hosted project management tool yet. Stay on Linear.
+- **Figma:** No alternative. Stay on Figma.
+- **Email:** Self-hosting email is a nightmare. Use Resend, Postmark, or similar.
+
+This stack covers the tools where self-hosting has clear wins—docs, analytics, chat, CRM, automation—and leaves the rest to SaaS. You get data ownership, predictable costs, and a bill that doesn't scale with headcount.
