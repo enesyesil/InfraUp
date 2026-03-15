@@ -20,8 +20,6 @@ import { AppCard } from "@/components/site/AppCard";
 import { SectionHeader } from "@/components/site/SectionHeader";
 import { DockerSnippet } from "@/components/site/DockerSnippet";
 
-const BUILD_FALLBACK_SLUG = "__build_fallback__";
-
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const [categories, apps] = await Promise.all([
     getCategories(),
@@ -32,14 +30,11 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
   }));
   const appSlugs = apps.map((app) => ({ slug: app.slug }));
   const seen = new Set<string>();
-  const params = [...categorySlugs, ...appSlugs].filter(({ slug }) => {
+  return [...categorySlugs, ...appSlugs].filter(({ slug }) => {
     if (seen.has(slug)) return false;
     seen.add(slug);
     return true;
   });
-  // Static export requires at least one param when DB is unavailable
-  if (params.length === 0) return [{ slug: BUILD_FALLBACK_SLUG }];
-  return params;
 }
 
 async function getPageData(slug: string) {
@@ -81,7 +76,6 @@ export default async function AppsSlugPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  if (slug === BUILD_FALLBACK_SLUG) notFound();
   const data = await getPageData(slug);
   if (!data) notFound();
 

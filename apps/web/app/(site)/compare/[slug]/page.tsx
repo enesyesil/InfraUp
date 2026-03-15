@@ -62,8 +62,6 @@ function generateAutoVerdict(appA: AppWithDeps, appB: AppWithDeps): React.ReactN
   return <p>{parts.join(" ")}</p>;
 }
 
-const BUILD_FALLBACK_SLUG = "__build_fallback__";
-
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const apps = await getAllApps();
   const byCategory = new Map<string, AppWithDeps[]>();
@@ -84,8 +82,6 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
       }
     }
   }
-  // Static export requires at least one param when DB is unavailable
-  if (params.length === 0) return [{ slug: BUILD_FALLBACK_SLUG }];
   return params;
 }
 
@@ -115,7 +111,6 @@ export default async function ComparePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  if (slug === BUILD_FALLBACK_SLUG) notFound();
   const parts = slug.split("-vs-");
   if (parts.length !== 2) notFound();
 

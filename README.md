@@ -7,7 +7,7 @@ Discover and deploy 50+ self-hosted open source alternatives to SaaS tools. Repl
 ```
 infraup/
 ├── apps/
-│   ├── web/            # Next.js 14 (App Router, static export)
+│   ├── web/            # Next.js 14 (App Router, SSR / standalone)
 │   └── generator/      # Go CLI — scaffold & sync tools
 ├── packages/
 │   └── db/             # Prisma schema + client (PostgreSQL 16)
@@ -75,7 +75,7 @@ The site is available at `http://localhost:3000`.
 | `NEXT_PUBLIC_GENERATOR_LIVE` | No | Set to `"true"` to enable generator links |
 | `NEXT_PUBLIC_API_URL` | No | Go API base URL (default: `http://localhost:8080`) |
 
-For **production (e.g. Dokploy)**, set the same variables at runtime; see the Production section in [.env.example](.env.example) for a concise list and examples.
+For **production (e.g. Dokploy)**, set the same variables at runtime. The web container must have **`DATABASE_URL`** at runtime (for SSR, on-demand pages, and sitemap). See the Production section in [.env.example](.env.example) for a concise list and examples.
 
 ## Scripts
 
@@ -102,6 +102,8 @@ To add a new app, create a YAML file in `registry/apps/` and corresponding MDX i
 ## Docker
 
 CI builds and pushes three images to GHCR: **web** (frontend), **api** (backend for waitlist/health, used by `NEXT_PUBLIC_API_URL`), and **sync** (registry-to-DB job).
+
+The **web** app runs in SSR mode (Next.js standalone server), listens on **port 3000**, and requires **`DATABASE_URL` at runtime** for on-demand pages and the sitemap. Point Traefik or your reverse proxy at the web container on port 3000.
 
 ```bash
 # Build and run everything (postgres, web, api, sync)
