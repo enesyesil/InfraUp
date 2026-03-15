@@ -59,6 +59,8 @@ jobs:
           file: apps/web/Dockerfile
           build-args: |
             DATABASE_URL=${{ secrets.DATABASE_URL }}
+            NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
+            NEXT_PUBLIC_GENERATOR_LIVE=${{ secrets.NEXT_PUBLIC_GENERATOR_LIVE }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
