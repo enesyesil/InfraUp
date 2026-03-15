@@ -1,12 +1,14 @@
+# Compose loads .env from this directory. Override POSTGRES_* to customize.
+# DATABASE_URL for web/sync is built from those vars so they stay in sync.
 services:
   postgres:
     image: postgres:16-alpine
     environment:
-      POSTGRES_DB: infraup
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ${POSTGRES_DB:-infraup}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
     ports:
-      - "5433:5432"
+      - "${POSTGRES_HOST_PORT:-5433}:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
 
@@ -17,7 +19,19 @@ services:
     ports:
       - "3000:3000"
     environment:
-      DATABASE_URL: postgresql://postgres:password@postgres:5432/infraup
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@postgres:5432/${POSTGRES_DB:-infraup}
+    depends_on:
+      - postgres
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/generator/Dockerfile.api
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@postgres:5432/${POSTGRES_DB:-infraup}
+      PORT: "8080"
     depends_on:
       - postgres
 
@@ -26,7 +40,7 @@ services:
       context: .
       dockerfile: apps/generator/Dockerfile
     environment:
-      DATABASE_URL: postgresql://postgres:password@postgres:5432/infraup
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@postgres:5432/${POSTGRES_DB:-infraup}
     depends_on:
       - postgres
     restart: "no"

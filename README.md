@@ -75,6 +75,8 @@ The site is available at `http://localhost:3000`.
 | `NEXT_PUBLIC_GENERATOR_LIVE` | No | Set to `"true"` to enable generator links |
 | `NEXT_PUBLIC_API_URL` | No | Go API base URL (default: `http://localhost:8080`) |
 
+For **production (e.g. Dokploy)**, set the same variables at runtime; see the Production section in [.env.example](.env.example) for a concise list and examples.
+
 ## Scripts
 
 | Command | Description |
@@ -99,12 +101,15 @@ To add a new app, create a YAML file in `registry/apps/` and corresponding MDX i
 
 ## Docker
 
+CI builds and pushes three images to GHCR: **web** (frontend), **api** (backend for waitlist/health, used by `NEXT_PUBLIC_API_URL`), and **sync** (registry-to-DB job).
+
 ```bash
-# Build and run everything
+# Build and run everything (postgres, web, api, sync)
 docker compose up --build
 
 # Build individual images
 docker build -f apps/web/Dockerfile -t infraup-web .
+docker build -f apps/generator/Dockerfile.api -t infraup-api .
 docker build -f apps/generator/Dockerfile -t infraup-sync .
 ```
 
@@ -115,6 +120,7 @@ docker build -f apps/generator/Dockerfile -t infraup-sync .
 - Run `pnpm install` and `pnpm --filter web build`
 - Verify Docker image builds:
   - `docker build -f apps/web/Dockerfile -t infraup-web .`
+  - `docker build -f apps/generator/Dockerfile.api -t infraup-api .`
   - `docker build -f apps/generator/Dockerfile -t infraup-sync .`
 - Confirm `.github/workflows/build-and-push.yml` is valid and GHCR package permissions are enabled
 
