@@ -20,9 +20,8 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/apps/web/node_modules ./apps/web/node_modules
 COPY --from=deps /app/packages/db/node_modules ./packages/db/node_modules
 COPY . .
-WORKDIR /app/packages/db
-RUN pnpm prisma generate
 WORKDIR /app
+RUN pnpm db:generate
 RUN pnpm --filter web build
 
 FROM node:20-alpine AS runner
