@@ -7,6 +7,7 @@ FROM base AS deps
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/web/package.json ./apps/web/
 COPY packages/db/package.json ./packages/db/
+COPY packages/db/prisma ./packages/db/prisma
 RUN pnpm install --frozen-lockfile
 
 FROM base AS builder
@@ -20,9 +21,6 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/apps/web/node_modules ./apps/web/node_modules
 COPY --from=deps /app/packages/db/node_modules ./packages/db/node_modules
 COPY . .
-WORKDIR /app/packages/db
-RUN pnpm prisma generate
-WORKDIR /app
 RUN pnpm --filter web build
 
 FROM node:20-bookworm-slim AS runner
