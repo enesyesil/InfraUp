@@ -161,23 +161,16 @@ async function AppDetailPage({
 }: {
   app: NonNullable<Awaited<ReturnType<typeof getApp>>>;
 }) {
-  const [alternatives, depApps] = await Promise.all([
-    getAlternatives(app.slug, app.category, 3),
-    Promise.all(
-      app.dependencies.map((d: { dependencySlug: string }) => getApp(d.dependencySlug))
-    ),
-  ]);
+  const alternatives = await getAlternatives(app.slug, app.category, 3);
   const categoryName = formatCategory(app.category);
   const replacesText = app.replaces[0] ?? "SaaS";
 
   const composeServices: string[] = [
     `  ${app.slug}:\n    image: ${app.dockerImage}:latest\n    ports:\n      - "${app.port}:${app.port}"`,
   ];
-  app.dependencies.forEach((dep: { dependencySlug: string; type: string; optional: boolean }, i: number) => {
-    const depApp = depApps[i];
-    const image = depApp?.dockerImage ?? dep.dependencySlug;
+  app.dependencies.forEach((dep) => {
     composeServices.push(
-      `  ${dep.dependencySlug}:\n    image: ${image}:latest  # ${dep.type}${dep.optional ? " (optional)" : ""}`
+      `  ${dep.dependencySlug}:\n    image: ${dep.dependency.image}  # ${dep.type}${dep.optional ? " (optional)" : ""}`
     );
   });
   const composeYaml =
@@ -352,11 +345,11 @@ async function AppDetailPage({
         <section>
           <h2 className="section-heading text-2xl mb-4">Dependencies</h2>
           <ul className="space-y-2">
-            {app.dependencies.map((dep: { id: string; dependencySlug: string; type: string; optional: boolean }) => (
+            {app.dependencies.map((dep) => (
               <li key={dep.id} className="flex items-center gap-2">
-                <span className="badge">{dep.dependencySlug}</span>
+                <span className="badge">{dep.dependency.name}</span>
                 <span className="font-mono text-xs text-ink/60">
-                  {dep.type}
+                  {dep.type} · {dep.dependency.image}
                   {dep.optional && " (optional)"}
                 </span>
               </li>

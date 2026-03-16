@@ -1,0 +1,10 @@
+{
+  "name": "generator",
+  "private": true,
+  "scripts": {
+    "dev": "GOCACHE=/tmp/infraup-go-cache GOMODCACHE=/tmp/infraup-go-modcache GOTMPDIR=/tmp/infraup-go-tmp node ../../scripts/run-with-root-env.mjs go run ./cmd/api",
+    "build": "mkdir -p /tmp/infraup-generator /tmp/infraup-go-cache /tmp/infraup-go-modcache /tmp/infraup-go-tmp && GOCACHE=/tmp/infraup-go-cache GOMODCACHE=/tmp/infraup-go-modcache GOTMPDIR=/tmp/infraup-go-tmp node ../../scripts/run-with-root-env.mjs go build -o /tmp/infraup-generator/api ./cmd/api && GOCACHE=/tmp/infraup-go-cache GOMODCACHE=/tmp/infraup-go-modcache GOTMPDIR=/tmp/infraup-go-tmp node ../../scripts/run-with-root-env.mjs go build -o /tmp/infraup-generator/sync ./cmd/sync && GOCACHE=/tmp/infraup-go-cache GOMODCACHE=/tmp/infraup-go-modcache GOTMPDIR=/tmp/infraup-go-tmp node ../../scripts/run-with-root-env.mjs go build -o /tmp/infraup-generator/scaffold ./cmd/scaffold",
+    "sync": "GOCACHE=/tmp/infraup-go-cache GOMODCACHE=/tmp/infraup-go-modcache GOTMPDIR=/tmp/infraup-go-tmp node ../../scripts/run-with-root-env.mjs go run ./cmd/sync",
+    "test": "mkdir -p /tmp/infraup-go-cache /tmp/infraup-go-modcache /tmp/infraup-go-tmp && GOCACHE=/tmp/infraup-go-cache GOMODCACHE=/tmp/infraup-go-modcache GOTMPDIR=/tmp/infraup-go-tmp node ../../scripts/run-with-root-env.mjs go test ./..."
+  }
+}

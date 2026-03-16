@@ -134,13 +134,28 @@ model App {
   dependencies          AppDependency[]
 }
 
+model Dependency {
+  slug            String         @id
+  name            String
+  type            DependencyType
+  image           String
+  port            Int
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  appDependencies AppDependency[]
+}
+
 model AppDependency {
   id             String         @id @default(uuid())
   appId          String
   dependencySlug String
   type           DependencyType
   optional       Boolean        @default(false)
-  app            App            @relation(fields: [appId], references: [id])
+  app            App            @relation(fields: [appId], references: [id], onDelete: Cascade)
+  dependency     Dependency     @relation(fields: [dependencySlug], references: [slug], onUpdate: Cascade)
+
+  @@unique([appId, dependencySlug])
 }
 
 model Waitlist {

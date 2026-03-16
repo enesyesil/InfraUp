@@ -124,8 +124,14 @@ export function AppComparison({ appA, appB, verdict }: AppComparisonProps) {
             },
             {
               label: "Dependencies",
-              a: appA.dependencies.map((d: { dependencySlug: string }) => d.dependencySlug).join(", ") || "None",
-              b: appB.dependencies.map((d: { dependencySlug: string }) => d.dependencySlug).join(", ") || "None",
+              a:
+                appA.dependencies
+                  .map((d) => d.dependency.name)
+                  .join(", ") || "None",
+              b:
+                appB.dependencies
+                  .map((d) => d.dependency.name)
+                  .join(", ") || "None",
             },
             {
               label: "Complexity",

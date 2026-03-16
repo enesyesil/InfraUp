@@ -157,6 +157,7 @@ func main() {
 
 	appsDir := filepath.Join(projectRoot, "registry", "apps")
 	contentDir := filepath.Join(projectRoot, "registry", "content", "apps")
+	dependenciesDir := filepath.Join(projectRoot, "registry", "dependencies")
 
 	entries, err := os.ReadDir(appsDir)
 	if err != nil {
@@ -172,6 +173,14 @@ func main() {
 	}
 
 	httpClient := &http.Client{Timeout: 15 * time.Second}
+	dependencyRecords, err := loadDependencyRecords(dependenciesDir)
+	if err != nil {
+		log.Fatalf("failed to load dependency registry: %v", err)
+	}
+	if err := upsertDependencyRecords(ctx, pool, dependencyRecords); err != nil {
+		log.Fatalf("failed to upsert dependency registry: %v", err)
+	}
+	runner := pgxTxRunner{pool: pool}
 
 	var synced, warnings, errors, deactivated int
 	var yamlSlugs []string
@@ -232,182 +241,18 @@ func main() {
 			dockerVerified = true
 		}
 
-		// Derive activelyMaintained
-		activelyMaintained := true
-		if lastCommitAt != nil {
-			if time.Since(*lastCommitAt) > 6*30*24*time.Hour {
-				activelyMaintained = false
-			}
-		}
-
-		// Upsert App
-		maintenanceVerified := lastCommitAt != nil || lastReleaseAt != nil
-
-		ghStarsVal := 0
-		if ghStars != nil {
-			ghStarsVal = *ghStars
-		}
-
-		dockerSupported := true
-		if app.DockerSupported != nil {
-			dockerSupported = *app.DockerSupported
-		}
-		officialDockerImage := false
-		if app.OfficialDockerImage != nil {
-			officialDockerImage = *app.OfficialDockerImage
-		}
-
-		tier := "FREE"
-		if app.Tier != "" {
-			tier = app.Tier
-		}
-		license := "OTHER"
-		if app.License != "" {
-			license = app.License
-		}
-		deploymentComplexity := "MODERATE"
-		if app.DeploymentComplexity != "" {
-			deploymentComplexity = app.DeploymentComplexity
-		}
-
-		hasApi, hasMobileApp, hasSSOSupport, hasBackupTool, hasMultiLanguage, hasAuditLog, hasGuestAccess, hasOfflineMode := false, false, false, false, false, false, false, false
-		if app.Features != nil {
-			hasApi = app.Features.HasAPI
-			hasMobileApp = app.Features.HasMobileApp
-			hasSSOSupport = app.Features.HasSSOSupport
-			hasBackupTool = app.Features.HasBackupTool
-			hasMultiLanguage = app.Features.HasMultiLanguage
-			hasAuditLog = app.Features.HasAuditLog
-			hasGuestAccess = app.Features.HasGuestAccess
-			hasOfflineMode = app.Features.HasOfflineMode
-		}
-
-		hasAffiliate, affiliateUrl, affiliateSignupUrl := false, "", ""
-		if app.Affiliate != nil {
-			hasAffiliate = app.Affiliate.HasAffiliate
-			affiliateUrl = app.Affiliate.AffiliateUrl
-			affiliateSignupUrl = app.Affiliate.AffiliateSignupUrl
-		}
-
-		minRam := "512MB"
-		if app.MinRam != "" {
-			minRam = app.MinRam
-		}
-		businessRelevance := 5
-		if app.BusinessRelevance > 0 {
-			businessRelevance = app.BusinessRelevance
-		}
-
-		githubUrl := app.GitHubUrl
-		if githubUrl == "" && app.Meta != nil && app.Meta.GitHub != "" {
-			githubUrl = app.Meta.GitHub
-		}
-		websiteUrl := app.WebsiteUrl
-		if websiteUrl == "" && app.Meta != nil && app.Meta.Website != "" {
-			websiteUrl = app.Meta.Website
-		}
-		docsUrl := app.DocsUrl
-		if docsUrl == "" && app.Meta != nil && app.Meta.Docs != "" {
-			docsUrl = app.Meta.Docs
-		}
-		logoUrl := app.LogoUrl
-		if logoUrl == "" && app.Meta != nil && app.Meta.Logo != "" {
-			logoUrl = app.Meta.Logo
-		}
-
-		replaces := app.Replaces
-		if replaces == nil {
-			replaces = []string{}
-		}
-		tags := app.Tags
-		if tags == nil {
-			tags = []string{}
-		}
-
-		var appID string
-		err = pool.QueryRow(ctx, `
-			INSERT INTO "App" (
-				id, slug, name, category, description, subdomain, tier, "dockerImage", "dockerHubUrl", "dockerSupported", "officialDockerImage",
-				"websiteUrl", "githubUrl", "docsUrl", "logoUrl", port, "minRam", license, "deploymentComplexity", replaces, tags,
-				"githubStars", "lastCommitAt", "lastReleaseAt", "activelyMaintained",
-				"hasApi", "hasMobileApp", "hasSSOSupport", "hasBackupTool", "hasMultiLanguage", "hasAuditLog", "hasGuestAccess", "hasOfflineMode",
-				"hasAffiliate", "affiliateUrl", "affiliateSignupUrl", featured, "businessRelevance", "isActive",
-				"dockerVerifiedAt", "maintenanceVerifiedAt", "metaVerifiedAt", "updatedAt"
-			) VALUES (
-				gen_random_uuid(), $1, $2, $3, $4, $5, $6::"AppTier", $7, NULLIF($8,''), $9, $10,
-				NULLIF($11,''), NULLIF($12,''), NULLIF($13,''), NULLIF($14,''), $15, $16, NULLIF($17,'')::"LicenseType", $18::"DeploymentComplexity", $19, $20,
-				NULLIF($21,0), $22, $23, $24,
-				$25, $26, $27, $28, $29, $30, $31, $32,
-				$33, NULLIF($34,''), NULLIF($35,''), $36, $37, true,
-				CASE WHEN $38 THEN NOW() ELSE NULL END,
-				CASE WHEN $39 THEN NOW() ELSE NULL END,
-				NOW(),
-				NOW()
-			)
-			ON CONFLICT (slug) DO UPDATE SET
-				name = EXCLUDED.name, category = EXCLUDED.category, description = EXCLUDED.description, subdomain = EXCLUDED.subdomain,
-				tier = EXCLUDED.tier, "dockerImage" = EXCLUDED."dockerImage", "dockerHubUrl" = EXCLUDED."dockerHubUrl",
-				"dockerSupported" = EXCLUDED."dockerSupported", "officialDockerImage" = EXCLUDED."officialDockerImage",
-				"websiteUrl" = EXCLUDED."websiteUrl", "githubUrl" = EXCLUDED."githubUrl", "docsUrl" = EXCLUDED."docsUrl", "logoUrl" = EXCLUDED."logoUrl",
-				port = EXCLUDED.port, "minRam" = EXCLUDED."minRam", license = EXCLUDED.license, "deploymentComplexity" = EXCLUDED."deploymentComplexity",
-				replaces = EXCLUDED.replaces, tags = EXCLUDED.tags,
-				"githubStars" = EXCLUDED."githubStars", "lastCommitAt" = EXCLUDED."lastCommitAt", "lastReleaseAt" = EXCLUDED."lastReleaseAt",
-				"activelyMaintained" = EXCLUDED."activelyMaintained",
-				"hasApi" = EXCLUDED."hasApi", "hasMobileApp" = EXCLUDED."hasMobileApp", "hasSSOSupport" = EXCLUDED."hasSSOSupport",
-				"hasBackupTool" = EXCLUDED."hasBackupTool", "hasMultiLanguage" = EXCLUDED."hasMultiLanguage", "hasAuditLog" = EXCLUDED."hasAuditLog",
-				"hasGuestAccess" = EXCLUDED."hasGuestAccess", "hasOfflineMode" = EXCLUDED."hasOfflineMode",
-				"hasAffiliate" = EXCLUDED."hasAffiliate", "affiliateUrl" = EXCLUDED."affiliateUrl", "affiliateSignupUrl" = EXCLUDED."affiliateSignupUrl",
-				featured = EXCLUDED.featured, "businessRelevance" = EXCLUDED."businessRelevance", "isActive" = true,
-				"dockerVerifiedAt" = CASE WHEN $38 THEN NOW() ELSE "App"."dockerVerifiedAt" END,
-				"maintenanceVerifiedAt" = CASE WHEN $39 THEN NOW() ELSE "App"."maintenanceVerifiedAt" END,
-				"metaVerifiedAt" = NOW(),
-				"updatedAt" = NOW()
-			RETURNING id
-		`,
-			app.Slug, app.Name, app.Category, app.Description, app.Subdomain, tier, dockerImage,
-			app.DockerHubUrl, dockerSupported, officialDockerImage,
-			websiteUrl, githubUrl, docsUrl, logoUrl, app.Port, minRam, license, deploymentComplexity,
-			replaces, tags,
-			ghStarsVal, lastCommitAt, lastReleaseAt, activelyMaintained,
-			hasApi, hasMobileApp, hasSSOSupport, hasBackupTool, hasMultiLanguage, hasAuditLog, hasGuestAccess, hasOfflineMode,
-			hasAffiliate, affiliateUrl, affiliateSignupUrl, app.Featured, businessRelevance,
-			dockerVerified, maintenanceVerified,
-		).Scan(&appID)
-
+		normalizedDeps, err := normalizeAppDependencies(app.Dependencies, dependencyRecords)
 		if err != nil {
-			log.Printf("error: failed to upsert %s: %v", app.Slug, err)
+			log.Printf("error: failed to normalize dependencies for %s: %v", app.Slug, err)
 			errors++
 			continue
 		}
 
-		// Delete existing AppDependency rows, then insert fresh
-		_, err = pool.Exec(ctx, `DELETE FROM "AppDependency" WHERE "appId" = $1`, appID)
-		if err != nil {
-			log.Printf("error: failed to delete dependencies for %s: %v", app.Slug, err)
+		input := buildAppUpsertInput(app, dockerImage, ghStars, lastCommitAt, lastReleaseAt, dockerVerified)
+		if err := syncAppWithRunner(ctx, runner, input, normalizedDeps); err != nil {
+			log.Printf("error: failed to sync %s: %v", app.Slug, err)
 			errors++
 			continue
-		}
-
-		for _, dep := range app.Dependencies {
-			depSlug := dep.DependencySlug
-			if depSlug == "" {
-				depSlug = dep.Slug
-			}
-			if depSlug == "" {
-				continue
-			}
-			depType := dep.Type
-			if depType == "" {
-				depType = "DATABASE"
-			}
-			_, err = pool.Exec(ctx, `
-				INSERT INTO "AppDependency" (id, "appId", "dependencySlug", type, optional)
-				VALUES (gen_random_uuid(), $1, $2, $3::"DependencyType", $4)
-			`, appID, depSlug, depType, dep.Optional)
-			if err != nil {
-				log.Printf("warning: failed to insert dependency %s for %s: %v", depSlug, app.Slug, err)
-				warnings++
-			}
 		}
 
 		yamlSlugs = append(yamlSlugs, app.Slug)
@@ -430,6 +275,14 @@ func main() {
 		} else {
 			deactivated = int(result.RowsAffected())
 		}
+	}
+	if err := cleanupInactiveAppDependencies(ctx, pool); err != nil {
+		log.Printf("error: failed to clean inactive app dependencies: %v", err)
+		errors++
+	}
+	if err := cleanupStaleDependencies(ctx, pool, sortedDependencySlugs(dependencyRecords)); err != nil {
+		log.Printf("error: failed to clean stale dependencies: %v", err)
+		errors++
 	}
 
 	// Summary

@@ -5,10 +5,10 @@
   "main": "./index.ts",
   "types": "./index.ts",
   "scripts": {
-    "postinstall": "prisma generate",
-    "db:generate": "prisma generate",
-    "db:push": "prisma db push",
-    "db:migrate": "prisma migrate dev"
+    "postinstall": "node ../../scripts/run-with-root-env.mjs prisma generate",
+    "db:generate": "node ../../scripts/run-with-root-env.mjs prisma generate",
+    "db:push": "node ../../scripts/run-with-root-env.mjs prisma db push",
+    "db:migrate": "node ../../scripts/run-with-root-env.mjs prisma migrate dev"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",

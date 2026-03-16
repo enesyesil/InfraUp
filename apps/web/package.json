@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "node ../../scripts/run-with-root-env.mjs next dev",
+    "build": "node ../../scripts/run-with-root-env.mjs next build",
+    "start": "node ../../scripts/run-with-root-env.mjs next start",
+    "lint": "node ../../scripts/run-with-root-env.mjs next lint"
   },
   "dependencies": {
     "@infraup/db": "workspace:^",

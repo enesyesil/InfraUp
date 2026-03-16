@@ -3,7 +3,7 @@ WORKDIR /app
 COPY apps/generator/go.mod apps/generator/go.sum ./
 RUN go mod download
 COPY apps/generator/ .
-RUN go build -o /sync ./cmd/sync/main.go
+RUN go build -o /sync ./cmd/sync
 
 FROM alpine:latest
 RUN apk --no-cache add ca-certificates

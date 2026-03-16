@@ -3,11 +3,15 @@
   "private": true,
   "scripts": {
     "dev": "turbo dev",
+    "dev:web": "pnpm --filter web dev",
+    "dev:api": "pnpm --filter generator dev",
     "build": "turbo build",
     "lint": "turbo lint",
     "db:generate": "pnpm --filter @infraup/db db:generate",
     "db:push": "pnpm --filter @infraup/db db:push",
-    "db:migrate": "pnpm --filter @infraup/db db:migrate"
+    "db:migrate": "pnpm --filter @infraup/db db:migrate",
+    "sync": "pnpm --filter generator sync",
+    "check": "pnpm db:generate && pnpm sync && pnpm --filter generator test && pnpm --filter web build"
   },
   "packageManager": "pnpm@9.15.4",
   "devDependencies": {

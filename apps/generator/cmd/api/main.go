@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"log"
+	"net"
 	"net/http"
 	"os"
 	"regexp"
@@ -115,16 +116,21 @@ func main() {
 	if port == "" {
 		port = "8080"
 	}
+	trustProxyHeaders := strings.EqualFold(os.Getenv("TRUST_PROXY_HEADERS"), "true")
 
 	rl := newRateLimiter(5, time.Hour)
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /v1/health", corsMiddleware(healthHandler()))
-	mux.HandleFunc("POST /v1/waitlist", corsMiddleware(waitlistHandler(pool, rl)))
+	mux.HandleFunc("POST /v1/waitlist", corsMiddleware(waitlistHandler(pool, rl, trustProxyHeaders)))
 
 	addr := ":" + port
+	listener, err := net.Listen("tcp", addr)
+	if err != nil {
+		log.Fatalf("server failed: %v", err)
+	}
 	log.Printf("API listening on %s", addr)
-	if err := http.ListenAndServe(addr, mux); err != nil {
+	if err := http.Serve(listener, mux); err != nil {
 		log.Fatalf("server failed: %v", err)
 	}
 }
@@ -161,18 +167,15 @@ func healthHandler() http.HandlerFunc {
 	}
 }
 
-func waitlistHandler(pool *pgxpool.Pool, rl *rateLimiter) http.HandlerFunc {
+func waitlistHandler(pool *pgxpool.Pool, rl *rateLimiter, trustProxyHeaders bool) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		ip := r.RemoteAddr
-		if xff := r.Header.Get("X-Forwarded-For"); xff != "" {
-			if idx := strings.Index(xff, ","); idx >= 0 {
-				ip = strings.TrimSpace(xff[:idx])
-			} else {
-				ip = strings.TrimSpace(xff)
-			}
+		clientIP := extractClientIP(r, trustProxyHeaders)
+		if clientIP == "" {
+			clientIP = "unknown"
 		}
 
-		if !rl.allow(ip) {
+		if !rl.allow(clientIP) {
+			log.Printf("waitlist rejected: reason=rate_limit client_ip=%s", clientIP)
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusTooManyRequests)
 			json.NewEncoder(w).Encode(map[string]string{"error": "rate limit exceeded"})
@@ -213,7 +216,7 @@ func waitlistHandler(pool *pgxpool.Pool, rl *rateLimiter) http.HandlerFunc {
 			ON CONFLICT (email) DO UPDATE SET role = $2, "replacingTools" = $3
 		`, req.Email, req.Role, replacingTools)
 		if err != nil {
-			log.Printf("waitlist upsert error: %v", err)
+			log.Printf("waitlist rejected: reason=db_error client_ip=%s email=%s err=%v", clientIP, req.Email, err)
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusInternalServerError)
 			json.NewEncoder(w).Encode(map[string]string{"error": "internal error"})
@@ -224,6 +227,7 @@ func waitlistHandler(pool *pgxpool.Pool, rl *rateLimiter) http.HandlerFunc {
 		if resendKey != "" {
 			go sendConfirmationEmail(resendKey, req.Email)
 		}
+		log.Printf("waitlist accepted: client_ip=%s email=%s", clientIP, req.Email)
 
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
@@ -242,7 +246,7 @@ func sendConfirmationEmail(apiKey, email string) {
 
 	req, err := http.NewRequest("POST", "https://api.resend.com/emails", bytes.NewReader(jsonBody))
 	if err != nil {
-		log.Printf("resend request error: %v", err)
+		log.Printf("waitlist email failed: reason=request_error email=%s err=%v", email, err)
 		return
 	}
 	req.Header.Set("Authorization", "Bearer "+apiKey)
@@ -250,12 +254,15 @@ func sendConfirmationEmail(apiKey, email string) {
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		log.Printf("resend send error: %v", err)
+		log.Printf("waitlist email failed: reason=send_error email=%s err=%v", email, err)
 		return
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
-		log.Printf("resend API error: status %d for %s", resp.StatusCode, email)
+		log.Printf("waitlist email failed: reason=provider_error email=%s status=%d", email, resp.StatusCode)
+		return
 	}
+
+	log.Printf("waitlist email sent: email=%s status=%d", email, resp.StatusCode)
 }
