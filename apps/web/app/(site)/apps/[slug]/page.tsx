@@ -4,8 +4,6 @@ import type { Metadata } from "next";
 import {
   getApp,
   getAppsByCategory,
-  getCategories,
-  getAllApps,
   getAlternatives,
 } from "@/lib/db";
 import type { AppCategory } from "@/lib/db";
@@ -20,22 +18,8 @@ import { AppCard } from "@/components/site/AppCard";
 import { SectionHeader } from "@/components/site/SectionHeader";
 import { DockerSnippet } from "@/components/site/DockerSnippet";
 
-export async function generateStaticParams(): Promise<{ slug: string }[]> {
-  const [categories, apps] = await Promise.all([
-    getCategories(),
-    getAllApps(),
-  ]);
-  const categorySlugs = categories.map(({ category }) => ({
-    slug: categorySlug(category),
-  }));
-  const appSlugs = apps.map((app) => ({ slug: app.slug }));
-  const seen = new Set<string>();
-  return [...categorySlugs, ...appSlugs].filter(({ slug }) => {
-    if (seen.has(slug)) return false;
-    seen.add(slug);
-    return true;
-  });
-}
+/** DB is not reachable during Docker/BuildKit image build; render at request time. */
+export const dynamic = "force-dynamic";
 
 async function getPageData(slug: string) {
   const [app, categoryEnum] = await Promise.all([

@@ -1,5 +1,8 @@
 import type { MetadataRoute } from "next";
 import { getAllApps, getCategories } from "@/lib/db";
+
+/** DB is not reachable during Docker/BuildKit image build; generate sitemap per request. */
+export const dynamic = "force-dynamic";
 import { categorySlug } from "@/lib/utils";
 import { getBlogPosts } from "@/lib/mdx";
 import { getGuides } from "@/lib/mdx";

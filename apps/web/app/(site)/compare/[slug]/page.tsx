@@ -1,11 +1,14 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getAllApps, getApp } from "@/lib/db";
+import { getApp } from "@/lib/db";
 import { AppComparison } from "@/components/site/AppComparison";
 import { SectionHeader } from "@/components/site/SectionHeader";
 import { formatCategory } from "@/lib/utils";
 import type { AppWithDeps } from "@/lib/db";
+
+/** DB is not reachable during Docker/BuildKit image build; render at request time. */
+export const dynamic = "force-dynamic";
 
 function parseRamMb(ram: string): number {
   const m = ram.match(/^(\d+)(MB|GB)$/i);
@@ -60,29 +63,6 @@ function generateAutoVerdict(appA: AppWithDeps, appB: AppWithDeps): React.ReactN
   }
 
   return <p>{parts.join(" ")}</p>;
-}
-
-export async function generateStaticParams(): Promise<{ slug: string }[]> {
-  const apps = await getAllApps();
-  const byCategory = new Map<string, AppWithDeps[]>();
-  for (const app of apps) {
-    const cat = app.category;
-    if (!byCategory.has(cat)) byCategory.set(cat, []);
-    byCategory.get(cat)!.push(app);
-  }
-
-  const params: { slug: string }[] = [];
-  for (const [, categoryApps] of byCategory) {
-    const slugs = categoryApps.map((a) => a.slug).sort();
-    for (let i = 0; i < slugs.length; i++) {
-      for (let j = i + 1; j < slugs.length; j++) {
-        const a = slugs[i];
-        const b = slugs[j];
-        params.push({ slug: `${a}-vs-${b}` });
-      }
-    }
-  }
-  return params;
 }
 
 export async function generateMetadata({

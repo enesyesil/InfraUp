@@ -4,6 +4,9 @@ import {
   getFeaturedApps,
   getCategories,
 } from "@/lib/db";
+
+/** DB is not reachable during Docker/BuildKit image build; render at request time. */
+export const dynamic = "force-dynamic";
 import { AppCard } from "@/components/site/AppCard";
 import { CategoryCard } from "@/components/site/CategoryCard";
 import { SectionHeader } from "@/components/site/SectionHeader";

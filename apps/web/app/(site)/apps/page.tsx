@@ -1,5 +1,8 @@
 import { getAllApps, getCategories } from "@/lib/db";
 import { CatalogClient } from "@/components/site/CatalogClient";
+
+/** DB is not reachable during Docker/BuildKit image build; render at request time. */
+export const dynamic = "force-dynamic";
 import { SectionHeader } from "@/components/site/SectionHeader";
 
 export default async function AppsCatalogPage() {
