@@ -1,0 +1,18 @@
+id: mongodb
+name: "MongoDB"
+type: DATABASE
+image: mongo:7.0
+port: 27017
+envs:
+  - key: MONGO_INITDB_ROOT_USERNAME
+    value: "app"
+  - key: MONGO_INITDB_ROOT_PASSWORD
+    generated: random32
+  - key: MONGO_INITDB_DATABASE
+    template: "{{ .DBName }}"
+volumes:
+  - name: mongodata
+    path: /data/db
+resources:
+  memory: 256Mi
+  cpu: 100m
