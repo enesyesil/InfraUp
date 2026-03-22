@@ -8,6 +8,8 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/web/package.json ./apps/web/
 COPY packages/db/package.json ./packages/db/
 COPY packages/db/prisma ./packages/db/prisma
+# @infraup/db postinstall runs prisma generate via this script (loads optional .env.local)
+COPY scripts/run-with-root-env.mjs ./scripts/run-with-root-env.mjs
 RUN pnpm install --frozen-lockfile
 
 FROM base AS builder
